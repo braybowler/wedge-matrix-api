@@ -72,9 +72,10 @@ class LoginControllerTest extends TestCase
     public function test_logs_warning_messaging_on_unsuccessful_login_attempts(): void
     {
         $userEmail = 'test@example.com';
+        $userPassword = Hash::make('password');
         User::factory()->create([
             'email' => $userEmail,
-            'password' => Hash::make('password'),
+            'password' => $userPassword,
         ]);
 
         $this->assertDatabaseCount('users', 1);
@@ -85,7 +86,9 @@ class LoginControllerTest extends TestCase
         Auth::shouldReceive('attempt')->once()->andReturn(false);
         Log::shouldReceive('warning')->once()->with(
             'Log in attempt with invalid credentials detected',
-            Mockery::any()
+           [
+               $userEmail,
+           ]
         );
 
         $response = $this->postJson(

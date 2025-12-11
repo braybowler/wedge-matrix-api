@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use Hash;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -18,7 +19,7 @@ class LoginController extends Controller
             if (!Auth::attempt($credentials)) {
                 Log::warning(
                     'Log in attempt with invalid credentials detected',
-                    [$credentials],
+                    [$credentials['email']],
                 );
 
                 return response()->json([
