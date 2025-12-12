@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use Hash;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -16,7 +14,7 @@ class LoginController extends Controller
         try {
             $credentials = $request->only(['email', 'password']);
 
-            if (!Auth::attempt($credentials)) {
+            if (! Auth::attempt($credentials)) {
                 Log::warning(
                     'Log in attempt with invalid credentials detected',
                     [$credentials['email']],
@@ -28,7 +26,7 @@ class LoginController extends Controller
             }
 
             $user = Auth::user();
-        }  catch (Throwable $e) {
+        } catch (Throwable $e) {
             Log::error(
                 'Server error while logging in',
                 [$e->getMessage(), $e->getTrace()],
@@ -39,9 +37,12 @@ class LoginController extends Controller
             ], 500);
         }
 
+        $token = $user->createToken('wedge-matrix')->plainTextToken;
+
         return response()->json([
             'message' => 'Login successful',
             'user' => $user,
+            'access_token' => $token,
         ], 200);
     }
 }
