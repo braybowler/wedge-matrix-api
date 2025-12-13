@@ -30,7 +30,7 @@ class UserCreationServiceTest extends TestCase
         ]);
     }
 
-    public function test_created_user_has_a_hashed_password(): void
+    public function test_creates_a_user_with_a_hashed_password(): void
     {
         $email = 'test@example.com';
         $password = 'password';
