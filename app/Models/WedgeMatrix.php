@@ -20,6 +20,7 @@ class WedgeMatrix extends Model
         'number_of_rows',
         'number_of_columns',
         'column_headers',
+        'selected_row_display_option',
         'values',
     ];
 

@@ -18,6 +18,7 @@ class WedgeMatrixResource extends JsonResource
             'number_of_rows' => $this->number_of_rows,
             'number_of_columns' => $this->number_of_columns,
             'column_headers' => $this->column_headers,
+            'selected_row_display_option' => $this->selected_row_display_option,
             'values' => $this->values,
         ];
     }

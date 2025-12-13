@@ -15,6 +15,10 @@ return new class extends Migration
             $table->string('label')->nullable();
             $table->tinyInteger('number_of_rows')->default(4);
             $table->tinyInteger('number_of_columns')->default(4);
+            $table->enum(
+                'selected_row_display_option',
+                ['Carry', 'Total', 'Both']
+            )->default('Both');
             $table->json('column_headers')->nullable();
             $table->json('values')->nullable();
             $table->timestamps();
