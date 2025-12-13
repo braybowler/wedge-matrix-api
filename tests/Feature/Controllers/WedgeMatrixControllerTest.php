@@ -3,9 +3,11 @@
 namespace Feature\Controllers;
 
 use App\Models\User;
-use App\Models\WedgeMatrix;
+use Exception;
+use Facades\App\Models\WedgeMatrix;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Mockery;
 use Tests\TestCase;
 
 class WedgeMatrixControllerTest extends TestCase
@@ -22,11 +24,9 @@ class WedgeMatrixControllerTest extends TestCase
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('wedge_matrices', 1);
 
-        $response = $this->getJson(
+        $response = $this->actingAs($user)->getJson(
             route('wedge-matrix.index')
         );
-
-        $response->dump();
 
         $response->assertOk();
         $response->assertJsonPath('data.0.id', $wedgeMatrix->id);
@@ -64,29 +64,61 @@ class WedgeMatrixControllerTest extends TestCase
         $response->assertJsonPath('data.0.user_id', $wedgeMatrix->user_id);
     }
 
+    public function test_disallows_guest_access(): void
+    {
+        $response = $this->getJson(
+            route('wedge-matrix.index')
+        );
+
+        $response->assertUnauthorized();
+    }
+
     public function test_responds_with_a_json_payload_when_catching_a_server_error_during_index_request(): void
     {
         $user = User::factory()->create();
-        $wedgeMatrix = WedgeMatrix::factory()->create(
+        WedgeMatrix::factory()->create(
             ['user_id' => $user->id]
         );
 
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('wedge_matrices', 1);
 
-        $response = $this->getJson(
+        WedgeMatrix::shouldReceive('query')
+            ->once()
+            ->andThrow(new Exception());
+
+        $response = $this->actingAs($user)->getJson(
             route('wedge-matrix.index')
         );
 
-        $response->dump();
+        $response->assertServerError();
+        $response->assertJsonPath('message', 'Unexpected error while fetching wedge matrices');
+    }
 
-        $response->assertOk();
-        $response->assertJsonPath('data.0.id', $wedgeMatrix->id);
-        $response->assertJsonPath('data.0.label', $wedgeMatrix->label);
-        $response->assertJsonPath('data.0.number_of_rows', $wedgeMatrix->number_of_rows);
-        $response->assertJsonPath('data.0.number_of_columns', $wedgeMatrix->number_of_columns);
-        $response->assertJsonPath('data.0.column_headers', $wedgeMatrix->column_headers);
-        $response->assertJsonPath('data.0.values', $wedgeMatrix->values);
-        $response->assertJsonPath('data.0.user_id', $wedgeMatrix->user_id);
+    public function test_logs_error_messaging_on_unsuccessful_index_requests(): void
+    {
+        $user = User::factory()->create();
+        WedgeMatrix::factory()->create(
+            ['user_id' => $user->id]
+        );
+
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('wedge_matrices', 1);
+
+        WedgeMatrix::shouldReceive('query')
+            ->once()
+            ->andThrow(new Exception());
+
+        Log::shouldReceive('error')->once()->with(
+            'Server error while fetching wedge matrices: (GET /api/wedge-matrix)',
+            Mockery::any()
+        );
+
+        $response = $this->actingAs($user)->getJson(
+            route('wedge-matrix.index')
+        );
+
+        $response->assertServerError();
+        $response->assertJsonPath('message', 'Unexpected error while fetching wedge matrices');
     }
 }

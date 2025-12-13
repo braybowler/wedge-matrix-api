@@ -13,7 +13,9 @@ Route::get('/up', function () {
 Route::post('/register', RegisterController::class)->name('register');
 Route::post('/login', LoginController::class)->name('login');
 
-Route::get('/wedge-matrix', [WedgeMatrixController::class, 'index'])->name('wedge-matrix.index');
+Route::get('/wedge-matrix', [WedgeMatrixController::class, 'index'])
+    ->name('wedge-matrix.index')
+    ->middleware('auth:sanctum');
 
 Route::get('/user', function (Request $request) {
     return $request->user();

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\WedgeMatrixResource;
-use App\Models\WedgeMatrix;
+use Facades\App\Models\WedgeMatrix;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
