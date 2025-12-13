@@ -2,12 +2,11 @@
 
 namespace Feature\Controllers;
 
+use App\Exceptions\CouldNotCreateUserException;
+use App\Services\UserCreationService;
 use Facades\App\Models\User;
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Log;
-use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -100,66 +99,32 @@ class RegisterControllerTest extends TestCase
 
     public function test_responds_with_a_json_payload_when_creating_user_fails_during_registration_request(): void
     {
-        $exception = new QueryException(
-            '',
-            'insert into "users" ("email","password") values (?, ?)',
-            ['test@example.com', 'password'],
-            new Exception()
-        );
+        $this->mock(UserCreationService::class, function ($mock) {
+            $mock->shouldReceive('create')
+                ->once()
+                ->with('test@example.com', 'password')
+                ->andThrow(new CouldNotCreateUserException('Could not create user'));
+        });
 
-        User::shouldReceive('create')
-            ->once()
-            ->andThrow($exception);
-
-        $response = $this->postJson(
-            route('register'),
-            [
-                'email' => 'test@example.com',
-                'password' => 'password',
-                'passwordConfirmation' => 'password',
-            ]
-        );
+        $response = $this->postJson(route('register'), [
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'passwordConfirmation' => 'password',
+        ]);
 
         $response
             ->assertStatus(400)
             ->assertJson(['message' => 'Could not create user']);
     }
 
-    public function test_logs_error_messaging_when_creating_user_fails_during_registration_request(): void
-    {
-        $exception = new QueryException(
-            '',
-            'insert into "users" ("email","password") values (?, ?)',
-            ['test@example.com', 'password'],
-            new Exception()
-        );
-
-        User::shouldReceive('create')
-            ->once()
-            ->andThrow($exception);
-
-        Log::shouldReceive('error')->once()->with(
-            'Failed to create user while registering',
-            Mockery::any()
-        );
-
-        $this->postJson(
-            route('register'),
-            [
-                'email' => 'test@example.com',
-                'password' => 'password',
-                'passwordConfirmation' => 'password',
-            ]
-        );
-    }
-
     public function test_responds_with_a_json_payload_when_catching_a_server_error_during_registration_request(): void
     {
-        $exception = new Exception();
-
-        User::shouldReceive('create')
-            ->once()
-            ->andThrow($exception);
+        $this->mock(UserCreationService::class, function ($mock) {
+            $mock->shouldReceive('create')
+                ->once()
+                ->with('test@example.com', 'password')
+                ->andThrow(new Exception());
+        });
 
         $response = $this->postJson(
             route('register'),
@@ -173,28 +138,5 @@ class RegisterControllerTest extends TestCase
         $response
             ->assertStatus(500)
             ->assertJson(['message' => 'Unexpected error while registering user']);
-    }
-
-    public function test_logs_error_messaging_when_catching_a_server_error_during_registration_request(): void
-    {
-        $exception = new Exception();
-
-        User::shouldReceive('create')
-            ->once()
-            ->andThrow($exception);
-
-        Log::shouldReceive('error')->once()->with(
-            'Server error while registering user',
-            Mockery::any()
-        );
-
-        $this->postJson(
-            route('register'),
-            [
-                'email' => 'test@example.com',
-                'password' => 'password',
-                'passwordConfirmation' => 'password',
-            ]
-        );
     }
 }

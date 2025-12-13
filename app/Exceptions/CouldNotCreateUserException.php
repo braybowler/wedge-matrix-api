@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
-class CouldNotCreateUserException
-{
+use RuntimeException;
 
+class CouldNotCreateUserException extends RuntimeException
+{
+    //
 }
