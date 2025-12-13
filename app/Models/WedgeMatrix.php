@@ -10,6 +10,24 @@ class WedgeMatrix extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'label',
+        'number_of_rows',
+        'number_of_columns',
+        'column_headers',
+        'values',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
