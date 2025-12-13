@@ -17,7 +17,7 @@ class WedgeMatrixFactory extends Factory
             'label' => $this->faker->word(),
             'number_of_rows' => 4,
             'number_of_columns' => 4,
-            'column_headers' => $this->faker->words(),
+            'column_headers' => $this->faker->words(4),
             'values' => $this->faker->words(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

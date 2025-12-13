@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\CouldNotCreateUserException;
 use App\Models\User;
+use App\Models\WedgeMatrix;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -18,10 +19,14 @@ class UserCreationService
     public function create(string $email, string $password): User
     {
         try {
-            return User::create([
+            $user = User::create([
                 'email'    => $email,
                 'password' => Hash::make($password),
             ]);
+
+            $user->wedgeMatrix()->create();
+
+            return $user;
         } catch (QueryException $e) {
             Log::error(
                 'Failed to create user while registering',

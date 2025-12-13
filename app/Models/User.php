@@ -35,6 +35,8 @@ class User extends Authenticatable
         'updated_at',
     ];
 
+    protected $with = ['wedgeMatrix'];
+
     public function wedgeMatrix(): HasOne
     {
         return $this->hasOne(WedgeMatrix::class);

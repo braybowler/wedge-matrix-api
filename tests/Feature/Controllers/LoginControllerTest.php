@@ -3,6 +3,8 @@
 namespace Feature\Controllers;
 
 use App\Models\User;
+use App\Models\WedgeMatrix;
+use App\Services\UserCreationService;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
@@ -19,10 +21,13 @@ class LoginControllerTest extends TestCase
     public function test_responds_with_a_json_payload_on_successful_login_attempts(): void
     {
         $userEmail = 'test@example.com';
-        User::factory()->create([
+        $user = User::factory()->create([
             'email' => $userEmail,
             'password' => Hash::make('password'),
         ]);
+        $wedgeMatrix = WedgeMatrix::factory()->create(
+            ['user_id' => $user->id]
+        );
 
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseHas('users', [
@@ -39,6 +44,8 @@ class LoginControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonPath('user.email', $userEmail);
+        $response->assertJsonPath('user.wedge_matrix.id', $wedgeMatrix->id);
+        $response->assertJsonPath('user.wedge_matrix.user_id', $user->id);
         $response->assertJsonPath('message', 'Login successful');
     }
 
