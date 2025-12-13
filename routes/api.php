@@ -16,7 +16,3 @@ Route::post('/login', LoginController::class)->name('login');
 Route::get('/wedge-matrix', [WedgeMatrixController::class, 'index'])
     ->name('wedge-matrix.index')
     ->middleware('auth:sanctum');
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
