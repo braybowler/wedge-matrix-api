@@ -14,7 +14,7 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'email' => $this->email,
-            'wedge_matrix'  => new WedgeMatrixResource($this->wedgeMatrix()),
+            'wedge_matrix' => new WedgeMatrixResource($this->wedgeMatrix()),
         ];
     }
 }

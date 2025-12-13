@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exceptions\CouldNotCreateUserException;
 use App\Http\Requests\RegisterRequest;
 use App\Services\UserCreationService;
-use Facades\App\Models\User;
 use Throwable;
 
 class RegisterController extends Controller
@@ -29,7 +28,7 @@ class RegisterController extends Controller
 
         return response()->json([
             'message' => 'User registered successfully',
-            'user'    => $user,
+            'user' => $user,
         ], 201);
     }
 }

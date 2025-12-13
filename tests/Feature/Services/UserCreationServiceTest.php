@@ -6,12 +6,11 @@ use App\Exceptions\CouldNotCreateUserException;
 use App\Models\User;
 use App\Services\UserCreationService;
 use Exception;
-use Facades\App\Models\WedgeMatrix;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Tests\TestCase;
 use Mockery;
+use Tests\TestCase;
 
 class UserCreationServiceTest extends TestCase
 {
@@ -103,7 +102,7 @@ class UserCreationServiceTest extends TestCase
         $email = 'test@example.com';
         $password = 'password';
 
-        Hash::shouldReceive('make')->once()->andThrow(new Exception());
+        Hash::shouldReceive('make')->once()->andThrow(new Exception);
         Log::shouldReceive('error')->once()->with(
             'Server error while registering user',
             Mockery::any()
@@ -120,7 +119,7 @@ class UserCreationServiceTest extends TestCase
         $email = 'test@example.com';
         $password = 'password';
 
-        Hash::shouldReceive('make')->once()->andThrow(new Exception());
+        Hash::shouldReceive('make')->once()->andThrow(new Exception);
 
         $this->expectException(Exception::class);
 

@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Exceptions\CouldNotCreateUserException;
 use App\Models\User;
-use App\Models\WedgeMatrix;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -20,7 +19,7 @@ class UserCreationService
     {
         try {
             $user = User::create([
-                'email'    => $email,
+                'email' => $email,
                 'password' => Hash::make($password),
             ]);
 

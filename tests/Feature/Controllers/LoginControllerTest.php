@@ -4,7 +4,6 @@ namespace Feature\Controllers;
 
 use App\Models\User;
 use App\Models\WedgeMatrix;
-use App\Services\UserCreationService;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
@@ -93,9 +92,9 @@ class LoginControllerTest extends TestCase
         Auth::shouldReceive('attempt')->once()->andReturn(false);
         Log::shouldReceive('warning')->once()->with(
             'Log in attempt with invalid credentials detected',
-           [
-               $userEmail,
-           ]
+            [
+                $userEmail,
+            ]
         );
 
         $response = $this->postJson(
@@ -156,7 +155,7 @@ class LoginControllerTest extends TestCase
             'email' => $userEmail,
         ]);
 
-        Auth::shouldReceive('attempt')->once()->andThrow(new Exception());
+        Auth::shouldReceive('attempt')->once()->andThrow(new Exception);
 
         $response = $this->postJson(
             route('login'),
@@ -186,7 +185,7 @@ class LoginControllerTest extends TestCase
             'email' => $userEmail,
         ]);
 
-        Auth::shouldReceive('attempt')->once()->andThrow(new Exception());
+        Auth::shouldReceive('attempt')->once()->andThrow(new Exception);
         Log::shouldReceive('error')->with(
             'Server error while logging in',
             Mockery::any()

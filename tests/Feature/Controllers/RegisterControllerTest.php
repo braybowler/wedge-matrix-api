@@ -4,8 +4,8 @@ namespace Feature\Controllers;
 
 use App\Exceptions\CouldNotCreateUserException;
 use App\Services\UserCreationService;
-use Facades\App\Models\User;
 use Exception;
+use Facades\App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
@@ -69,7 +69,7 @@ class RegisterControllerTest extends TestCase
                 'password' => null,
                 'passwordConfirmation' => null,
             ],
-            'password and passwordConfirmation do not match'  => [
+            'password and passwordConfirmation do not match' => [
                 'email' => 'test@example.com',
                 'password' => 'test',
                 'passwordConfirmation' => 'different',
@@ -123,7 +123,7 @@ class RegisterControllerTest extends TestCase
             $mock->shouldReceive('create')
                 ->once()
                 ->with('test@example.com', 'password')
-                ->andThrow(new Exception());
+                ->andThrow(new Exception);
         });
 
         $response = $this->postJson(

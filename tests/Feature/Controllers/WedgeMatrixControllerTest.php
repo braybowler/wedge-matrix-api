@@ -85,7 +85,7 @@ class WedgeMatrixControllerTest extends TestCase
 
         WedgeMatrix::shouldReceive('query')
             ->once()
-            ->andThrow(new Exception());
+            ->andThrow(new Exception);
 
         $response = $this->actingAs($user)->getJson(
             route('wedge-matrix.index')
@@ -107,7 +107,7 @@ class WedgeMatrixControllerTest extends TestCase
 
         WedgeMatrix::shouldReceive('query')
             ->once()
-            ->andThrow(new Exception());
+            ->andThrow(new Exception);
 
         Log::shouldReceive('error')->once()->with(
             'Server error while fetching wedge matrices: (GET /api/wedge-matrix)',
