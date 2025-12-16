@@ -2,37 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\CouldNotCreateUserException;
 use App\Http\Requests\RegisterRequest;
-use Facades\App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Log;
+use App\Services\UserCreationService;
 use Throwable;
 
 class RegisterController extends Controller
 {
-    public function __invoke(RegisterRequest $request)
+    public function __invoke(RegisterRequest $request, UserCreationService $userCreationService)
     {
         try {
-            $user = User::create([
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
-        } catch (QueryException $e) {
-            Log::error(
-                'Failed to create user while registering',
-                [$e->getMessage(), $e->getTrace()],
+            $user = $userCreationService->create(
+                email: $request->email,
+                password: $request->password,
             );
-
+        } catch (CouldNotCreateUserException $e) {
             return response()->json([
                 'message' => 'Could not create user',
             ], 400);
         } catch (Throwable $e) {
-            Log::error(
-                'Server error while registering user',
-                [$e->getMessage(), $e->getTrace()]
-            );
-
             return response()->json([
                 'message' => 'Unexpected error while registering user',
             ], 500);
