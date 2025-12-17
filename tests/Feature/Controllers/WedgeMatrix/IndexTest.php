@@ -1,16 +1,18 @@
 <?php
 
-namespace Feature\Controllers;
+namespace Feature\Controllers\WedgeMatrix;
 
 use App\Models\User;
+use App\Repositories\WedgeMatrix\WedgeMatrixRepository;
 use Exception;
 use Facades\App\Models\WedgeMatrix;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Mockery;
 use Tests\TestCase;
 
-class WedgeMatrixControllerTest extends TestCase
+class IndexTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -38,7 +40,7 @@ class WedgeMatrixControllerTest extends TestCase
         $response->assertJsonPath('data.0.user_id', $wedgeMatrix->user_id);
     }
 
-    public function test_only_responds_with_records_related_to_the_requesting_user(): void
+    public function test_only_responds_with_records_related_to_the_requesting_user_for_index_requests(): void
     {
         $user = User::factory()->create();
         $wedgeMatrix = WedgeMatrix::factory()->create(
@@ -64,7 +66,7 @@ class WedgeMatrixControllerTest extends TestCase
         $response->assertJsonPath('data.0.user_id', $wedgeMatrix->user_id);
     }
 
-    public function test_disallows_guest_access(): void
+    public function test_disallows_guest_access_for_index_requests(): void
     {
         $response = $this->getJson(
             route('wedge-matrix.index')
@@ -73,7 +75,7 @@ class WedgeMatrixControllerTest extends TestCase
         $response->assertUnauthorized();
     }
 
-    public function test_responds_with_a_json_payload_when_catching_a_server_error_during_index_request(): void
+    public function test_responds_with_a_json_payload_when_catching_a_server_error_during_index_requests(): void
     {
         $user = User::factory()->create();
         WedgeMatrix::factory()->create(
@@ -83,9 +85,11 @@ class WedgeMatrixControllerTest extends TestCase
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('wedge_matrices', 1);
 
-        WedgeMatrix::shouldReceive('query')
-            ->once()
-            ->andThrow(new Exception);
+        $this->mock(WedgeMatrixRepository::class, function ($mock) {
+            $mock->shouldReceive('index')
+                ->once()
+                ->andThrow(new Exception);
+        });
 
         $response = $this->actingAs($user)->getJson(
             route('wedge-matrix.index')
@@ -105,9 +109,11 @@ class WedgeMatrixControllerTest extends TestCase
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseCount('wedge_matrices', 1);
 
-        WedgeMatrix::shouldReceive('query')
-            ->once()
-            ->andThrow(new Exception);
+        $this->mock(WedgeMatrixRepository::class, function ($mock) {
+            $mock->shouldReceive('index')
+                ->once()
+                ->andThrow(new Exception);
+        });
 
         Log::shouldReceive('error')->once()->with(
             'Server error while fetching wedge matrices: (GET /api/wedge-matrix)',

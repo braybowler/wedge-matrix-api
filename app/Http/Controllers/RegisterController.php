@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\CouldNotCreateUserException;
 use App\Http\Requests\RegisterRequest;
-use App\Services\UserCreationService;
+use App\Services\User\UserCreationService;
 use Throwable;
 
 class RegisterController extends Controller

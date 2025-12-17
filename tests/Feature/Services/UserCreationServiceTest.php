@@ -4,7 +4,7 @@ namespace Feature\Services;
 
 use App\Exceptions\CouldNotCreateUserException;
 use App\Models\User;
-use App\Services\UserCreationService;
+use App\Services\User\UserCreationService;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
