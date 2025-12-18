@@ -20,7 +20,7 @@ class WedgeMatrixFactory extends Factory
             'number_of_columns' => 4,
             'column_headers' => $this->faker->words(4),
             'selected_row_display_option' => 'Both',
-            'values' => $this->faker->words(),
+            'yardage_values' => null,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

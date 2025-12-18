@@ -3,7 +3,7 @@
 namespace Feature\Controllers;
 
 use App\Exceptions\CouldNotCreateUserException;
-use App\Services\UserCreationService;
+use App\Services\User\UserCreationService;
 use Exception;
 use Facades\App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -113,7 +113,7 @@ class RegisterControllerTest extends TestCase
         ]);
 
         $response
-            ->assertStatus(400)
+            ->assertBadRequest()
             ->assertJson(['message' => 'Could not create user']);
     }
 

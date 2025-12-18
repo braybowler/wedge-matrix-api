@@ -13,10 +13,10 @@ Route::get('/up', function () {
 Route::post('/register', RegisterController::class)->name('register');
 Route::post('/login', LoginController::class)->name('login');
 
-Route::get('/wedge-matrix', [WedgeMatrixController::class, 'index'])
-    ->name('wedge-matrix.index')
-    ->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/wedge-matrix', [WedgeMatrixController::class, 'index'])
+        ->name('wedge-matrix.index');
 
-Route::put('/wedge-matrix', [WedgeMatrixController::class, 'update'])
-    ->name('wedge-matrix.update')
-    ->middleware('auth:sanctum');
+    Route::put('/wedge-matrix/{wedgeMatrix}', [WedgeMatrixController::class, 'update'])
+        ->name('wedge-matrix.update');
+});
