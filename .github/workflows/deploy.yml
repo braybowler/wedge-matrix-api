@@ -33,12 +33,12 @@ jobs:
             --exclude=".env" \
             --exclude="vendor" \
             ./ \
-            root@${{ secrets.SERVER_IP }}:${{ secrets.SERVER_API_PATH }}
+            root@${{ secrets.SERVER_IP }}:${{ secrets.SERVER_PATH }}
 
       - name: Deploy containers
         run: |
           ssh root@${{ secrets.SERVER_IP }} << 'EOF'
-            cd ${{ secrets.SERVER_API_PATH }}
+            cd ${{ secrets.SERVER_PATH }}
 
             docker compose pull
             docker compose build
