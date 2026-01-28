@@ -1,26 +1,35 @@
 FROM php:8.2-fpm-alpine
 
 RUN apk add --no-cache \
-    nginx \
     git \
     unzip \
     libpng-dev \
     oniguruma-dev \
     libzip-dev \
+    icu-dev \
     mysql-client \
  && docker-php-ext-install \
     pdo_mysql \
     mbstring \
     zip \
     bcmath \
-    gd
+    gd \
+    intl
+
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
+ENV COMPOSER_MEMORY_LIMIT=-1
+
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install -vvv \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction \
+    --no-scripts
+
 
 COPY . .
 
