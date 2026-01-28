@@ -1,6 +1,7 @@
 FROM php:8.2-fpm-alpine
 
 RUN apk add --no-cache \
+    nginx \
     git \
     unzip \
     libpng-dev \
@@ -16,23 +17,17 @@ RUN apk add --no-cache \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
-# Install deps first (layer caching)
 COPY composer.json composer.lock ./
-RUN composer install \
-    --no-dev \
-    --optimize-autoloader \
-    --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Copy app
 COPY . .
-
-# Optimize Laravel
-RUN php artisan config:clear \
- && php artisan route:clear \
- && php artisan view:clear
 
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-CMD ["php-fpm"]
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]

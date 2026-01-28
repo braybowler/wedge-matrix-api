@@ -1,0 +1,10 @@
+.git
+.gitignore
+node_modules
+vendor
+tests
+.env
+.env.*
+docker-compose*
+compose*.yaml
+storage/logs

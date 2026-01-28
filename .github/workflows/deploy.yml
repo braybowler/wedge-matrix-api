@@ -1,50 +1,34 @@
-name: deploy
+name: build-and-push
 
 on:
   push:
     branches: [main]
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up SSH agent
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Login to GHCR
+        uses: docker/login-action@v3
         with:
-          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Add server to known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/php/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/braybowler/wedge-matrix-api:latest
+            ghcr.io/braybowler/wedge-matrix-api:${{ github.sha }}
 
-      - name: Sync project files
-        run: |
-          rsync -avz --delete \
-            --exclude=".env" \
-            --exclude="vendor" \
-            ./ \
-            root@${{ secrets.SERVER_IP }}:${{ secrets.SERVER_PATH }}
-
-      - name: Deploy containers
-        run: |
-          ssh root@${{ secrets.SERVER_IP }} << 'EOF'
-            cd ${{ secrets.SERVER_PATH }}
-
-            docker compose pull
-            docker compose build
-            docker compose up -d
-
-            docker compose exec -T app php artisan migrate --force
-            docker compose exec -T app php artisan config:cache
-            docker compose exec -T app php artisan route:cache
-          EOF
