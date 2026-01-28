@@ -1,6 +1,7 @@
 FROM php:8.4-fpm-alpine
 
 RUN apk add --no-cache \
+    nginx \
     git \
     unzip \
     libpng-dev \
@@ -16,7 +17,6 @@ RUN apk add --no-cache \
     gd \
     intl
 
-
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
@@ -24,12 +24,11 @@ WORKDIR /var/www/html
 ENV COMPOSER_MEMORY_LIMIT=-1
 
 COPY composer.json composer.lock ./
-RUN composer install -vvv \
+RUN composer install \
     --no-dev \
     --optimize-autoloader \
     --no-interaction \
     --no-scripts
-
 
 COPY . .
 
