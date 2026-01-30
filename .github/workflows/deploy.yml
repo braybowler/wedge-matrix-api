@@ -26,7 +26,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: docker/js/Dockerfile
+          file: docker/php/Dockerfile
           push: true
           tags: |
             ghcr.io/braybowler/wedge-matrix-api:latest
