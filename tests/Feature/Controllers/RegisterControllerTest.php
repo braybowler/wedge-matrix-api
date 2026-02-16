@@ -60,21 +60,25 @@ class RegisterControllerTest extends TestCase
                 'email' => 'test',
                 'password' => 'password',
                 'password_confirmation' => 'password',
+                'tos_accepted' => true,
             ],
             'duplicate email' => [
                 'email' => 'test@example.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
+                'tos_accepted' => true,
             ],
             'invalid password' => [
                 'email' => 'test@example.com',
                 'password' => null,
                 'password_confirmation' => null,
+                'tos_accepted' => true,
             ],
             'password and password_confirmation do not match' => [
                 'email' => 'test@example.com',
                 'password' => 'test',
                 'password_confirmation' => 'different',
+                'tos_accepted' => true,
             ],
             'tos not accepted' => [
                 'email' => 'new@example.com',
@@ -86,7 +90,7 @@ class RegisterControllerTest extends TestCase
     }
 
     #[DataProvider('requestProvider')]
-    public function test_responds_with_a_json_payload_when_registration_request_fails_validation($email, $password, $password_confirmation, $tos_accepted = null): void
+    public function test_responds_with_a_json_payload_when_registration_request_fails_validation($email, $password, $password_confirmation, $tos_accepted): void
     {
         User::factory()->create([
             'email' => $email,
@@ -97,11 +101,8 @@ class RegisterControllerTest extends TestCase
             'email' => $email,
             'password' => $password,
             'password_confirmation' => $password_confirmation,
+            'tos_accepted' => $tos_accepted
         ];
-
-        if ($tos_accepted !== null) {
-            $payload['tos_accepted'] = $tos_accepted;
-        }
 
         $response = $this->postJson(
             route('register'),
