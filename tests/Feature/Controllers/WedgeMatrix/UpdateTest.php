@@ -94,17 +94,51 @@ class UpdateTest extends TestCase
     public static function requestProvider(): array
     {
         return [
-            'number of columns' => [],
-            'column headers' => [],
-            'selected row display options' => [],
-            'yardages values' => [],
+            'number_of_columns must be an integer' => [
+                ['number_of_columns' => 'not-an-integer'],
+            ],
+            'number_of_columns must be at least 1' => [
+                ['number_of_columns' => 0],
+            ],
+            'number_of_columns must be at most 4' => [
+                ['number_of_columns' => 5],
+            ],
+            'column_headers must be an array' => [
+                ['column_headers' => 'not-an-array'],
+            ],
+            'column_headers items must be strings' => [
+                ['column_headers' => [123]],
+            ],
+            'selected_row_display_option must be a valid option' => [
+                ['selected_row_display_option' => 'Invalid'],
+            ],
+            'yardage_values must be an array' => [
+                ['yardage_values' => 'not-an-array'],
+            ],
+            'yardage_values items must be arrays' => [
+                ['yardage_values' => ['not-an-array']],
+            ],
+            'yardage_values carry_value must be numeric' => [
+                ['yardage_values' => [[['carry_value' => 'abc', 'total_value' => 100]]]],
+            ],
+            'yardage_values total_value must be numeric' => [
+                ['yardage_values' => [[['carry_value' => 100, 'total_value' => 'abc']]]],
+            ],
         ];
     }
 
     #[DataProvider('requestProvider')]
-    public function test_responds_with_a_json_payload_when_update_request_fails_validation(): void
+    public function test_responds_with_a_json_payload_when_update_request_fails_validation(array $payload): void
     {
-        $this->markTestSkipped();
+        $user = User::factory()->create();
+        $wedgeMatrix = WedgeMatrix::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->putJson(
+            route('wedge-matrix.update', $wedgeMatrix),
+            $payload,
+        );
+
+        $response->assertUnprocessable();
     }
 
     public function test_responds_with_a_json_payload_when_catching_a_wedge_matrix_update_error_during_update_requests(): void

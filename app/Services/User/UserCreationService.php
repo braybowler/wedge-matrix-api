@@ -15,13 +15,13 @@ class UserCreationService
      * @throws CouldNotCreateUserException
      * @throws Throwable
      */
-    public function create(string $email, string $password): User
+    public function create(string $email, string $password, bool $tosAccepted = false): User
     {
         try {
             $user = User::create([
                 'email' => $email,
                 'password' => Hash::make($password),
-                'tos_accepted_at' => now(),
+                'tos_accepted_at' => $tosAccepted ? now() : null,
             ]);
 
             $user->wedgeMatrix()->create([

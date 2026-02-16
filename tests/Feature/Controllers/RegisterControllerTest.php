@@ -117,7 +117,7 @@ class RegisterControllerTest extends TestCase
         $this->mock(UserCreationService::class, function ($mock) {
             $mock->shouldReceive('create')
                 ->once()
-                ->with('test@example.com', 'password')
+                ->with('test@example.com', 'password', true)
                 ->andThrow(new CouldNotCreateUserException('Could not create user'));
         });
 
@@ -138,7 +138,7 @@ class RegisterControllerTest extends TestCase
         $this->mock(UserCreationService::class, function ($mock) {
             $mock->shouldReceive('create')
                 ->once()
-                ->with('test@example.com', 'password')
+                ->with('test@example.com', 'password', true)
                 ->andThrow(new Exception);
         });
 

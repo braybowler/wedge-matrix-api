@@ -15,6 +15,7 @@ class RegisterController extends Controller
             $user = $userCreationService->create(
                 email: $request->email,
                 password: $request->password,
+                tosAccepted: $request->tos_accepted
             );
         } catch (CouldNotCreateUserException $e) {
             return response()->json([
