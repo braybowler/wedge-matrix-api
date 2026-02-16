@@ -7,7 +7,6 @@ use App\Repositories\WedgeMatrix\WedgeMatrixRepository;
 use Exception;
 use Facades\App\Models\WedgeMatrix;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Mockery;
 use Tests\TestCase;

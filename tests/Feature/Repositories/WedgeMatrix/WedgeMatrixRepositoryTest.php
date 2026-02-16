@@ -22,7 +22,7 @@ class WedgeMatrixRepositoryTest extends TestCase
 
         Auth::setUser($user);
 
-        $repository = new WedgeMatrixRepository();
+        $repository = new WedgeMatrixRepository;
 
         $wedgeMatrices = $repository->index()->get();
 
@@ -43,12 +43,10 @@ class WedgeMatrixRepositoryTest extends TestCase
 
         Auth::setUser($user);
 
-        $repository = new WedgeMatrixRepository();
+        $repository = new WedgeMatrixRepository;
 
         $wedgeMatrices = $repository->index()->get();
 
         $this->assertEquals(3, $wedgeMatrices->count());
     }
-
 }
-

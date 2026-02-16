@@ -22,6 +22,7 @@ class RegisterControllerTest extends TestCase
                 'email' => 'test@example.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
+                'tos_accepted' => true,
             ]
         );
 
@@ -41,6 +42,7 @@ class RegisterControllerTest extends TestCase
                 'email' => 'test@example.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
+                'tos_accepted' => true,
             ]
         );
 
@@ -74,24 +76,36 @@ class RegisterControllerTest extends TestCase
                 'password' => 'test',
                 'password_confirmation' => 'different',
             ],
+            'tos not accepted' => [
+                'email' => 'new@example.com',
+                'password' => 'password',
+                'password_confirmation' => 'password',
+                'tos_accepted' => false,
+            ],
         ];
     }
 
     #[DataProvider('requestProvider')]
-    public function test_responds_with_a_json_payload_when_registration_request_fails_validation($email, $password, $password_confirmation): void
+    public function test_responds_with_a_json_payload_when_registration_request_fails_validation($email, $password, $password_confirmation, $tos_accepted = null): void
     {
         User::factory()->create([
             'email' => $email,
             'password' => 'password',
         ]);
 
+        $payload = [
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $password_confirmation,
+        ];
+
+        if ($tos_accepted !== null) {
+            $payload['tos_accepted'] = $tos_accepted;
+        }
+
         $response = $this->postJson(
             route('register'),
-            [
-                'email' => $email,
-                'password' => $password,
-                'password_confirmation' => $password_confirmation,
-            ]
+            $payload,
         );
 
         $response->assertUnprocessable();
@@ -110,6 +124,7 @@ class RegisterControllerTest extends TestCase
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
+            'tos_accepted' => true,
         ]);
 
         $response
@@ -132,6 +147,7 @@ class RegisterControllerTest extends TestCase
                 'email' => 'test@example.com',
                 'password' => 'password',
                 'password_confirmation' => 'password',
+                'tos_accepted' => true,
             ]
         );
 

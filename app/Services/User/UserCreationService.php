@@ -21,10 +21,11 @@ class UserCreationService
             $user = User::create([
                 'email' => $email,
                 'password' => Hash::make($password),
+                'tos_accepted_at' => now(),
             ]);
 
             $user->wedgeMatrix()->create([
-                'column_headers' => ['25%', '50%', '75%', '100%']
+                'column_headers' => ['25%', '50%', '75%', '100%'],
             ]);
 
             return $user;

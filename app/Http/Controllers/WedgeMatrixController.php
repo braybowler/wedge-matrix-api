@@ -43,6 +43,7 @@ class WedgeMatrixController extends Controller
             }
 
             $wedgeMatrixUpdateService->update($wedgeMatrix, $request->validated());
+
             return response()->noContent();
         } catch (CouldNotUpdateWedgeMatrixException $e) {
             return response()->json([

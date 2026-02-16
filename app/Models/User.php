@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
+        'tos_accepted_at',
     ];
 
     /**
@@ -34,6 +35,7 @@ class User extends Authenticatable
         'remember_token',
         'created_at',
         'updated_at',
+        'tos_accepted_at',
     ];
 
     protected $with = ['wedgeMatrix'];
@@ -53,6 +55,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'tos_accepted_at' => 'datetime',
         ];
     }
 }

@@ -29,14 +29,14 @@ class UpdateTest extends TestCase
             [
                 'id' => $wedgeMatrix->id,
                 'user_id' => $user->id,
-                'number_of_columns' => 4
+                'number_of_columns' => 4,
             ]
         );
 
         $response = $this->actingAs($user)->putJson(
             route('wedge-matrix.update', $wedgeMatrix),
             [
-                'number_of_columns' => 3
+                'number_of_columns' => 3,
             ]
         );
 
@@ -46,7 +46,7 @@ class UpdateTest extends TestCase
             [
                 'id' => $wedgeMatrix->id,
                 'user_id' => $user->id,
-                'number_of_columns' => 3
+                'number_of_columns' => 3,
             ]
         );
 
@@ -70,21 +70,21 @@ class UpdateTest extends TestCase
         WedgeMatrix::factory()->create(
             [
                 'id' => 1,
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]
         );
 
         $targetUnownedWedgeMatrix = WedgeMatrix::factory()->create(
             [
                 'id' => 2,
-                'user_id' => $userTwo->id
+                'user_id' => $userTwo->id,
             ]
         );
 
         $response = $this->actingAs($user)->putJson(
             route('wedge-matrix.update', $targetUnownedWedgeMatrix),
             [
-                'number_of_columns' => 3
+                'number_of_columns' => 3,
             ]
         );
 
@@ -121,18 +121,18 @@ class UpdateTest extends TestCase
             [
                 'id' => $wedgeMatrix->id,
                 'user_id' => $user->id,
-                'number_of_columns' => 4
+                'number_of_columns' => 4,
             ]
         );
 
         $this->mock(WedgeMatrixUpdateService::class, function ($mock) {
-            $mock->shouldReceive('update')->andThrow(new CouldNotUpdateWedgeMatrixException());
+            $mock->shouldReceive('update')->andThrow(new CouldNotUpdateWedgeMatrixException);
         });
 
         $response = $this->actingAs($user)->putJson(
             route('wedge-matrix.update', $wedgeMatrix),
             [
-                'number_of_columns' => 3
+                'number_of_columns' => 3,
             ]
         );
 
@@ -154,18 +154,18 @@ class UpdateTest extends TestCase
             [
                 'id' => $wedgeMatrix->id,
                 'user_id' => $user->id,
-                'number_of_columns' => 4
+                'number_of_columns' => 4,
             ]
         );
 
         $this->mock(WedgeMatrixUpdateService::class, function ($mock) {
-            $mock->shouldReceive('update')->andThrow(new Exception());
+            $mock->shouldReceive('update')->andThrow(new Exception);
         });
 
         $response = $this->actingAs($user)->putJson(
             route('wedge-matrix.update', $wedgeMatrix),
             [
-                'number_of_columns' => 3
+                'number_of_columns' => 3,
             ]
         );
 
