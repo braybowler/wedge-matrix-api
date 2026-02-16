@@ -48,13 +48,13 @@ class UserCreationServiceTest extends TestCase
         $this->assertTrue(Hash::check($password, $user->password));
     }
 
-    public function test_sets_tos_accepted_at_on_newly_created_user(): void
+    public function test_sets_tos_accepted_at_to_false_by_default(): void
     {
         $service = app(UserCreationService::class);
         $service->create('test@example.com', 'password');
 
         $user = User::first();
-        $this->assertNotNull($user->tos_accepted_at);
+        $this->assertNull($user->tos_accepted_at);
     }
 
     public function test_creates_a_related_wedge_matrix_for_the_newly_created_user(): void
