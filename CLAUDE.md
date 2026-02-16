@@ -12,13 +12,13 @@ Laravel 12 REST API for a golf wedge yardage matrix application. Pure JSON API c
 |---|---|
 | First-time setup | `composer run setup` |
 | Start dev environment | `composer run dev` |
-| Run all tests | `composer run test` |
-| Run a single test | `php artisan test --filter=TestClassName` |
+| Run all tests | `./vendor/bin/sail artisan test` |
+| Run a single test | `./vendor/bin/sail artisan test --filter=TestClassName` |
 | Code style (lint/fix) | `./vendor/bin/pint` |
 | Run migrations | `php artisan migrate` |
 | Sail (Docker dev) | `./vendor/bin/sail up` |
 
-`composer run test` clears config cache then runs the PHPUnit suite. Tests use a `testing` SQLite/MySQL database with `RefreshDatabase`.
+Tests run inside the Sail container via `./vendor/bin/sail artisan test`. Tests use a `testing` MySQL database with `RefreshDatabase`.
 
 ## Architecture
 

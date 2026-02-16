@@ -6,12 +6,13 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WedgeMatrixController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/up', function () {
-    return response()->json(['status' => 'ok']);
+Route::middleware('throttle:auth')->group(function () {
+    Route::get('/up', function () {
+        return response()->json(['status' => 'ok']);
+    });
+    Route::post('/register', RegisterController::class)->name('register');
+    Route::post('/login', LoginController::class)->name('login');
 });
-
-Route::post('/register', RegisterController::class)->name('register');
-Route::post('/login', LoginController::class)->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', UserController::class)->name('user.show');
