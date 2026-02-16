@@ -12,7 +12,6 @@ return [
     'allowed_origins' => [
         'https://wedgematrix.ca',
         'https://www.wedgematrix.ca',
-
         'http://localhost:5173',
         'http://127.0.0.1:5173',
     ],
