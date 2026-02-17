@@ -70,6 +70,9 @@ class UserCreationServiceTest extends TestCase
         $this->assertDatabaseHas('wedge_matrices', [
             'user_id' => $user->id,
         ]);
+
+        $wedgeMatrix = $user->wedgeMatrix;
+        $this->assertEquals(['LW', 'SW', 'GW', 'PW'], $wedgeMatrix->club_labels);
     }
 
     public function test_logs_error_messaging_when_catching_a_query_exception_during_user_creation(): void

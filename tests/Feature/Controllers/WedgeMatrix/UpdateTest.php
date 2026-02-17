@@ -124,6 +124,15 @@ class UpdateTest extends TestCase
             'yardage_values total_value must be numeric' => [
                 ['yardage_values' => [[['carry_value' => 100, 'total_value' => 'abc']]]],
             ],
+            'club_labels must be an array' => [
+                ['club_labels' => 'not-an-array'],
+            ],
+            'club_labels items must be valid clubs' => [
+                ['club_labels' => ['INVALID']],
+            ],
+            'club_labels must have at least 1 item' => [
+                ['club_labels' => []],
+            ],
         ];
     }
 
@@ -139,6 +148,21 @@ class UpdateTest extends TestCase
         );
 
         $response->assertUnprocessable();
+    }
+
+    public function test_successfully_updates_club_labels(): void
+    {
+        $user = User::factory()->create();
+        $wedgeMatrix = WedgeMatrix::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->putJson(
+            route('wedge-matrix.update', $wedgeMatrix),
+            ['club_labels' => ['LW', 'SW', 'GW', 'AW', 'UW', 'PW']],
+        );
+
+        $response->assertNoContent();
+        $wedgeMatrix->refresh();
+        $this->assertEquals(['LW', 'SW', 'GW', 'AW', 'UW', 'PW'], $wedgeMatrix->club_labels);
     }
 
     public function test_responds_with_a_json_payload_when_catching_a_wedge_matrix_update_error_during_update_requests(): void
