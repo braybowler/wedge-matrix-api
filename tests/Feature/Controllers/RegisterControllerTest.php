@@ -101,7 +101,7 @@ class RegisterControllerTest extends TestCase
             'email' => $email,
             'password' => $password,
             'password_confirmation' => $password_confirmation,
-            'tos_accepted' => $tos_accepted
+            'tos_accepted' => $tos_accepted,
         ];
 
         $response = $this->postJson(

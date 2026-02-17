@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'tos_accepted_at',
+        'has_dismissed_tutorial',
     ];
 
     /**
@@ -56,6 +57,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'tos_accepted_at' => 'datetime',
+            'has_dismissed_tutorial' => 'boolean',
         ];
     }
 }
