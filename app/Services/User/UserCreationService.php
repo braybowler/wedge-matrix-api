@@ -24,7 +24,7 @@ class UserCreationService
                 'tos_accepted_at' => $tosAccepted ? now() : null,
             ]);
 
-            $user->wedgeMatrix()->create([
+            $user->wedgeMatrices()->create([
                 'column_headers' => ['25%', '50%', '75%', '100%'],
                 'club_labels' => ['LW', 'SW', 'GW', 'PW'],
             ]);

@@ -71,7 +71,7 @@ class UserCreationServiceTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $wedgeMatrix = $user->wedgeMatrix;
+        $wedgeMatrix = $user->wedgeMatrices()->first();
         $this->assertEquals(['LW', 'SW', 'GW', 'PW'], $wedgeMatrix->club_labels);
     }
 

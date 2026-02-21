@@ -43,8 +43,8 @@ class LoginControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonPath('user.email', $userEmail);
-        $response->assertJsonPath('user.wedge_matrix.id', $wedgeMatrix->id);
-        $response->assertJsonPath('user.wedge_matrix.user_id', $user->id);
+        $response->assertJsonPath('user.wedge_matrices.0.id', $wedgeMatrix->id);
+        $response->assertJsonPath('user.wedge_matrices.0.user_id', $user->id);
         $response->assertJsonPath('message', 'Login successful');
     }
 

@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -39,11 +38,11 @@ class User extends Authenticatable
         'tos_accepted_at',
     ];
 
-    protected $with = ['wedgeMatrix'];
+    protected $with = ['wedgeMatrices'];
 
-    public function wedgeMatrix(): HasOne
+    public function wedgeMatrices(): HasMany
     {
-        return $this->hasOne(WedgeMatrix::class);
+        return $this->hasMany(WedgeMatrix::class);
     }
 
     /**

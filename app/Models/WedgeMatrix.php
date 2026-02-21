@@ -25,6 +25,11 @@ class WedgeMatrix extends Model
         'yardage_values',
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
     protected $hidden = [
         'created_at',
         'updated_at',
@@ -35,6 +40,11 @@ class WedgeMatrix extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
