@@ -32,12 +32,12 @@ Tests run inside the Sail container via `./vendor/bin/sail artisan test`. Tests 
 
 **Auth:** Laravel Sanctum bearer tokens. Token name: `'wedge-matrix'`. Three routes are protected behind `auth:sanctum` middleware. Ownership is checked manually in controllers (no policies/gates).
 
-**Data model:** Each `User` has exactly one `WedgeMatrix` (one-to-one). The matrix stores `column_headers` and `yardage_values` as JSON columns. Default column headers are `['25%', '50%', '75%', '100%']`, set at registration.
+**Data model:** Each `User` has many `WedgeMatrix` records (one-to-many via `hasMany`). Each matrix stores `column_headers`, `club_labels`, and `yardage_values` as JSON columns. A default matrix with column headers `['25%', '50%', '75%', '100%']` and club labels `['LW', 'SW', 'GW', 'PW']` is created at registration.
 
 ## API Routes (all prefixed `/api`)
 
 - `POST /register`, `POST /login` — public
-- `GET /user` — authenticated, returns user + matrix
+- `GET /user`, `PATCH /user` — authenticated, returns/updates user + matrices
 - `GET /wedge-matrix`, `PUT /wedge-matrix/{wedgeMatrix}` — authenticated
 - `GET /up` — health check
 

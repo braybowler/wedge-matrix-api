@@ -49,8 +49,17 @@ class RegisterControllerTest extends TestCase
         $this->assertDatabaseCount('users', 1);
 
         $response->assertCreated();
-        $response->assertJsonPath('user.email', 'test@example.com');
+        $response->assertJsonPath('data.email', 'test@example.com');
         $response->assertJsonPath('message', 'User registered successfully');
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'email',
+                'has_dismissed_tutorial',
+                'wedge_matrices',
+            ],
+            'message',
+        ]);
     }
 
     public static function requestProvider(): array

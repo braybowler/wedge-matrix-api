@@ -8,7 +8,6 @@ use App\Http\Resources\WedgeMatrixResource;
 use App\Models\WedgeMatrix;
 use App\Repositories\WedgeMatrix\WedgeMatrixRepository;
 use App\Services\WedgeMatrix\WedgeMatrixUpdateService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -35,13 +34,6 @@ class WedgeMatrixController extends Controller
     public function update(WedgeMatrixUpdateRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixUpdateService $wedgeMatrixUpdateService)
     {
         try {
-            if ($wedgeMatrix->user_id !== Auth::id()) {
-                return response()->json(
-                    ['message' => 'Forbidden'],
-                    403
-                );
-            }
-
             $wedgeMatrixUpdateService->update($wedgeMatrix, $request->validated());
 
             return response()->noContent();

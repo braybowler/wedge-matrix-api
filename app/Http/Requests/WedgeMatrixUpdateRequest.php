@@ -9,7 +9,7 @@ class WedgeMatrixUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return $this->route('wedgeMatrix')->user_id === $this->user()->id;
     }
 
     /**

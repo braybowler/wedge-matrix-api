@@ -26,6 +26,13 @@ class LoginController extends Controller
             }
 
             $user = Auth::user();
+            $token = $user->createToken('wedge-matrix')->plainTextToken;
+
+            return response()->json([
+                'message' => 'Login successful',
+                'user' => $user,
+                'access_token' => $token,
+            ], 200);
         } catch (Throwable $e) {
             Log::error(
                 'Server error while logging in',
@@ -36,13 +43,5 @@ class LoginController extends Controller
                 'message' => 'Unexpected error while logging in',
             ], 500);
         }
-
-        $token = $user->createToken('wedge-matrix')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Login successful',
-            'user' => $user,
-            'access_token' => $token,
-        ], 200);
     }
 }

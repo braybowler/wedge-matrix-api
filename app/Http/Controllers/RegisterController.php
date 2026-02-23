@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\CouldNotCreateUserException;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Services\User\UserCreationService;
 use Throwable;
 
@@ -27,9 +28,9 @@ class RegisterController extends Controller
             ], 500);
         }
 
-        return response()->json([
-            'message' => 'User registered successfully',
-            'user' => $user,
-        ], 201);
+        return (new UserResource($user))
+            ->additional(['message' => 'User registered successfully'])
+            ->response()
+            ->setStatusCode(201);
     }
 }

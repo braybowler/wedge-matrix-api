@@ -2,24 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
+use App\Http\Requests\UserUpdateRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function show(Request $request): JsonResponse
+    public function show(Request $request): UserResource
     {
-        $user = $request->user();
-
-        return response()->json([
-            'user' => $user,
-        ]);
+        return new UserResource($request->user());
     }
 
-    public function update(Request $request): JsonResponse
+    public function update(UserUpdateRequest $request): UserResource
     {
-        $request->user()->update(['has_dismissed_tutorial' => true]);
+        $request->user()->update($request->validated());
 
-        return response()->json(['message' => 'Tutorial dismissed.']);
+        return new UserResource($request->user());
     }
 }

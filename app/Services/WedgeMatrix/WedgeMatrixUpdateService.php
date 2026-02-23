@@ -2,7 +2,6 @@
 
 namespace App\Services\WedgeMatrix;
 
-use App\Exceptions\CouldNotCreateUserException;
 use App\Exceptions\CouldNotUpdateWedgeMatrixException;
 use App\Models\WedgeMatrix;
 use Illuminate\Database\QueryException;
@@ -27,7 +26,7 @@ class WedgeMatrixUpdateService
                 [$e->getMessage(), $e->getTrace()],
             );
 
-            throw new CouldNotCreateUserException(
+            throw new CouldNotUpdateWedgeMatrixException(
                 'Could not update wedge matrix',
                 previous: $e
             );

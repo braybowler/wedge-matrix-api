@@ -46,6 +46,7 @@ class LoginControllerTest extends TestCase
         $response->assertJsonPath('user.wedge_matrices.0.id', $wedgeMatrix->id);
         $response->assertJsonPath('user.wedge_matrices.0.user_id', $user->id);
         $response->assertJsonPath('message', 'Login successful');
+        $response->assertJsonStructure(['access_token']);
     }
 
     public function test_responds_with_a_json_payload_on_unsuccessful_login_attempts(): void
