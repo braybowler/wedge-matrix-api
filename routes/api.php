@@ -22,8 +22,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/wedge-matrix', [WedgeMatrixController::class, 'index'])
         ->name('wedge-matrix.index');
 
+    Route::post('/wedge-matrix', [WedgeMatrixController::class, 'store'])
+        ->name('wedge-matrix.store');
+
     Route::put('/wedge-matrix/{wedgeMatrix}', [WedgeMatrixController::class, 'update'])
         ->name('wedge-matrix.update');
+
+    Route::delete('/wedge-matrix/{wedgeMatrix}', [WedgeMatrixController::class, 'destroy'])
+        ->name('wedge-matrix.destroy');
 
     Route::get('/wedge-matrix/{wedgeMatrix}/download', WedgeMatrixDownloadController::class)
         ->name('wedge-matrix.download');

@@ -20,6 +20,7 @@ class WedgeMatrixUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'label' => 'sometimes|string|max:255',
             'number_of_columns' => 'sometimes|integer|min:1|max:4',
             'column_headers' => 'sometimes|array|min:1|max:4',
             'column_headers.*' => 'required_with:column_headers|string|max:255',
