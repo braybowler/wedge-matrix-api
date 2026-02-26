@@ -18,6 +18,7 @@ Route::middleware('throttle:auth')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [UserController::class, 'show'])->name('user.show');
     Route::patch('/user', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/user', [UserController::class, 'destroy'])->name('user.destroy');
 
     Route::get('/wedge-matrix', [WedgeMatrixController::class, 'index'])
         ->name('wedge-matrix.index');
