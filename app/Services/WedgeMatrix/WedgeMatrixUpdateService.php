@@ -14,12 +14,10 @@ class WedgeMatrixUpdateService
      * @throws CouldNotUpdateWedgeMatrixException
      * @throws Throwable
      */
-    public function update(WedgeMatrix $wedgeMatrix, $properties)
+    public function update(WedgeMatrix $wedgeMatrix, array $properties): void
     {
         try {
             $wedgeMatrix->update($properties);
-
-            return;
         } catch (QueryException $e) {
             Log::error(
                 'Failed to update wedge matrix',

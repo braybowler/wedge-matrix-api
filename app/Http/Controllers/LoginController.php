@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Resources\UserResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class LoginController extends Controller
 {
-    public function __invoke(LoginRequest $request)
+    public function __invoke(LoginRequest $request): JsonResponse
     {
         try {
             $credentials = $request->only(['email', 'password']);
@@ -17,7 +19,7 @@ class LoginController extends Controller
             if (! Auth::attempt($credentials)) {
                 Log::warning(
                     'Log in attempt with invalid credentials detected',
-                    [$credentials['email']],
+                    ['email' => $credentials['email']],
                 );
 
                 return response()->json([
@@ -30,7 +32,7 @@ class LoginController extends Controller
 
             return response()->json([
                 'message' => 'Login successful',
-                'user' => $user,
+                'user' => new UserResource($user),
                 'access_token' => $token,
             ], 200);
         } catch (Throwable $e) {

@@ -4,6 +4,7 @@ namespace App\Services\User;
 
 use App\Exceptions\CouldNotCreateUserException;
 use App\Models\User;
+use App\Models\WedgeMatrix;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -25,8 +26,8 @@ class UserCreationService
             ]);
 
             $user->wedgeMatrices()->create([
-                'column_headers' => ['25%', '50%', '75%', '100%'],
-                'club_labels' => ['LW', 'SW', 'GW', 'PW'],
+                'column_headers' => WedgeMatrix::DEFAULT_COLUMN_HEADERS,
+                'club_labels' => WedgeMatrix::DEFAULT_CLUBS,
             ]);
 
             return $user;

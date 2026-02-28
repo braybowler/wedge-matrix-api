@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Models\WedgeMatrix;
 use App\Services\WedgeMatrix\WedgeMatrixDeletionService;
 use Exception;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -54,11 +53,8 @@ class WedgeMatrixDeletionServiceTest extends TestCase
         $user = Mockery::mock(User::class);
         $user->shouldReceive('wedgeMatrices')->andReturn($hasMany);
 
-        $belongsTo = Mockery::mock(BelongsTo::class);
-        $belongsTo->shouldReceive('first')->andReturn($user);
-
         $wedgeMatrix = Mockery::mock(WedgeMatrix::class);
-        $wedgeMatrix->shouldReceive('user')->andReturn($belongsTo);
+        $wedgeMatrix->shouldReceive('getAttribute')->with('user')->andReturn($user);
         $wedgeMatrix->shouldReceive('delete')
             ->once()
             ->andThrow(new QueryException('test', '', [], new Exception));
@@ -82,11 +78,8 @@ class WedgeMatrixDeletionServiceTest extends TestCase
         $user = Mockery::mock(User::class);
         $user->shouldReceive('wedgeMatrices')->andReturn($hasMany);
 
-        $belongsTo = Mockery::mock(BelongsTo::class);
-        $belongsTo->shouldReceive('first')->andReturn($user);
-
         $wedgeMatrix = Mockery::mock(WedgeMatrix::class);
-        $wedgeMatrix->shouldReceive('user')->andReturn($belongsTo);
+        $wedgeMatrix->shouldReceive('getAttribute')->with('user')->andReturn($user);
         $wedgeMatrix->shouldReceive('delete')
             ->once()
             ->andThrow(new Exception('Something went wrong'));

@@ -10,6 +10,14 @@ class WedgeMatrix extends Model
 {
     use HasFactory;
 
+    const DEFAULT_CLUBS = ['LW', 'SW', 'GW', 'PW'];
+
+    const DEFAULT_COLUMN_HEADERS = ['25%', '50%', '75%', '100%'];
+
+    const DEFAULT_COLUMNS = 4;
+
+    const MAX_PER_USER = 5;
+
     /**
      * The attributes that are mass assignable.
      *

@@ -3,22 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CouldNotDownloadWedgeMatrixException;
+use App\Http\Requests\WedgeMatrixDownloadRequest;
 use App\Models\WedgeMatrix;
 use App\Services\WedgeMatrix\WedgeMatrixDownloadService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class WedgeMatrixDownloadController extends Controller
 {
-    public function __invoke(Request $request, WedgeMatrix $wedgeMatrix, WedgeMatrixDownloadService $service)
+    public function __invoke(WedgeMatrixDownloadRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixDownloadService $service): Response
     {
-        if ($wedgeMatrix->user_id !== $request->user()->id) {
-            return response()->json([
-                'message' => 'Forbidden',
-            ], 403);
-        }
-
         try {
             $pdf = $service->generatePdf($wedgeMatrix);
 

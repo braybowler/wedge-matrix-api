@@ -7,6 +7,7 @@ use App\Exceptions\CouldNotCreateWedgeMatrixException;
 use App\Exceptions\CouldNotDeleteWedgeMatrixException;
 use App\Exceptions\CouldNotUpdateWedgeMatrixException;
 use App\Exceptions\WedgeMatrixLimitReachedException;
+use App\Http\Requests\StoreWedgeMatrixRequest;
 use App\Http\Requests\WedgeMatrixDeleteRequest;
 use App\Http\Requests\WedgeMatrixUpdateRequest;
 use App\Http\Resources\WedgeMatrixResource;
@@ -15,13 +16,15 @@ use App\Repositories\WedgeMatrix\WedgeMatrixRepository;
 use App\Services\WedgeMatrix\WedgeMatrixCreationService;
 use App\Services\WedgeMatrix\WedgeMatrixDeletionService;
 use App\Services\WedgeMatrix\WedgeMatrixUpdateService;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class WedgeMatrixController extends Controller
 {
-    public function index(WedgeMatrixRepository $wedgeMatrixRepository)
+    public function index(WedgeMatrixRepository $wedgeMatrixRepository): AnonymousResourceCollection|JsonResponse
     {
         try {
             return WedgeMatrixResource::collection(
@@ -39,7 +42,7 @@ class WedgeMatrixController extends Controller
         }
     }
 
-    public function store(Request $request, WedgeMatrixCreationService $wedgeMatrixCreationService)
+    public function store(StoreWedgeMatrixRequest $request, WedgeMatrixCreationService $wedgeMatrixCreationService): JsonResponse
     {
         try {
             $wedgeMatrix = $wedgeMatrixCreationService->create($request->user(), $request->input('label'));
@@ -62,7 +65,7 @@ class WedgeMatrixController extends Controller
         }
     }
 
-    public function update(WedgeMatrixUpdateRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixUpdateService $wedgeMatrixUpdateService)
+    public function update(WedgeMatrixUpdateRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixUpdateService $wedgeMatrixUpdateService): Response|JsonResponse
     {
         try {
             $wedgeMatrixUpdateService->update($wedgeMatrix, $request->validated());
@@ -79,7 +82,7 @@ class WedgeMatrixController extends Controller
         }
     }
 
-    public function destroy(WedgeMatrixDeleteRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixDeletionService $wedgeMatrixDeletionService)
+    public function destroy(WedgeMatrixDeleteRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixDeletionService $wedgeMatrixDeletionService): Response|JsonResponse
     {
         try {
             $wedgeMatrixDeletionService->delete($wedgeMatrix);

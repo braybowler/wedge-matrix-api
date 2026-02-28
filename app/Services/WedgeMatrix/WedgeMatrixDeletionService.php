@@ -18,7 +18,7 @@ class WedgeMatrixDeletionService
      */
     public function delete(WedgeMatrix $wedgeMatrix): void
     {
-        if ($wedgeMatrix->user()->first()->wedgeMatrices()->count() <= 1) {
+        if ($wedgeMatrix->user->wedgeMatrices()->count() <= 1) {
             throw new CannotDeleteLastWedgeMatrixException(
                 'Cannot delete the last wedge matrix'
             );

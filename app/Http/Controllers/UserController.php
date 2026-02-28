@@ -6,7 +6,9 @@ use App\Exceptions\CouldNotDeleteUserException;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Services\User\UserDeletionService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Throwable;
 
 class UserController extends Controller
@@ -23,7 +25,7 @@ class UserController extends Controller
         return new UserResource($request->user());
     }
 
-    public function destroy(Request $request, UserDeletionService $userDeletionService)
+    public function destroy(Request $request, UserDeletionService $userDeletionService): Response|JsonResponse
     {
         try {
             $userDeletionService->delete($request->user());

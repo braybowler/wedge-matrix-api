@@ -20,8 +20,8 @@ class RegisterControllerTest extends TestCase
             route('register'),
             [
                 'email' => 'test@example.com',
-                'password' => 'password',
-                'password_confirmation' => 'password',
+                'password' => 'Password1!',
+                'password_confirmation' => 'Password1!',
                 'tos_accepted' => true,
             ]
         );
@@ -40,8 +40,8 @@ class RegisterControllerTest extends TestCase
             route('register'),
             [
                 'email' => 'test@example.com',
-                'password' => 'password',
-                'password_confirmation' => 'password',
+                'password' => 'Password1!',
+                'password_confirmation' => 'Password1!',
                 'tos_accepted' => true,
             ]
         );
@@ -67,14 +67,14 @@ class RegisterControllerTest extends TestCase
         return [
             'invalid email' => [
                 'email' => 'test',
-                'password' => 'password',
-                'password_confirmation' => 'password',
+                'password' => 'Password1!',
+                'password_confirmation' => 'Password1!',
                 'tos_accepted' => true,
             ],
             'duplicate email' => [
                 'email' => 'test@example.com',
-                'password' => 'password',
-                'password_confirmation' => 'password',
+                'password' => 'Password1!',
+                'password_confirmation' => 'Password1!',
                 'tos_accepted' => true,
             ],
             'invalid password' => [
@@ -91,8 +91,8 @@ class RegisterControllerTest extends TestCase
             ],
             'tos not accepted' => [
                 'email' => 'new@example.com',
-                'password' => 'password',
-                'password_confirmation' => 'password',
+                'password' => 'Password1!',
+                'password_confirmation' => 'Password1!',
                 'tos_accepted' => false,
             ],
         ];
@@ -126,14 +126,14 @@ class RegisterControllerTest extends TestCase
         $this->mock(UserCreationService::class, function ($mock) {
             $mock->shouldReceive('create')
                 ->once()
-                ->with('test@example.com', 'password', true)
+                ->with('test@example.com', 'Password1!', true)
                 ->andThrow(new CouldNotCreateUserException('Could not create user'));
         });
 
         $response = $this->postJson(route('register'), [
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
+            'password' => 'Password1!',
+            'password_confirmation' => 'Password1!',
             'tos_accepted' => true,
         ]);
 
@@ -147,7 +147,7 @@ class RegisterControllerTest extends TestCase
         $this->mock(UserCreationService::class, function ($mock) {
             $mock->shouldReceive('create')
                 ->once()
-                ->with('test@example.com', 'password', true)
+                ->with('test@example.com', 'Password1!', true)
                 ->andThrow(new Exception);
         });
 
@@ -155,8 +155,8 @@ class RegisterControllerTest extends TestCase
             route('register'),
             [
                 'email' => 'test@example.com',
-                'password' => 'password',
-                'password_confirmation' => 'password',
+                'password' => 'Password1!',
+                'password_confirmation' => 'Password1!',
                 'tos_accepted' => true,
             ]
         );

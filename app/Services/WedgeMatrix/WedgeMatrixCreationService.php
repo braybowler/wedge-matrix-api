@@ -19,25 +19,23 @@ class WedgeMatrixCreationService
      */
     public function create(User $user, ?string $label = null): WedgeMatrix
     {
-        if ($user->wedgeMatrices()->count() >= 5) {
+        if ($user->wedgeMatrices()->count() >= WedgeMatrix::MAX_PER_USER) {
             throw new WedgeMatrixLimitReachedException(
                 'Wedge matrix limit reached'
             );
         }
 
-        $defaultClubs = ['LW', 'SW', 'GW', 'PW'];
-        $defaultColumns = 4;
         $emptyCell = ['carry_value' => null, 'total_value' => null];
-        $emptyRow = array_fill(0, $defaultColumns, $emptyCell);
-        $defaultYardageValues = array_fill(0, count($defaultClubs), $emptyRow);
+        $emptyRow = array_fill(0, WedgeMatrix::DEFAULT_COLUMNS, $emptyCell);
+        $defaultYardageValues = array_fill(0, count(WedgeMatrix::DEFAULT_CLUBS), $emptyRow);
 
         try {
             return $user->wedgeMatrices()->create([
                 'label' => $label,
-                'number_of_rows' => count($defaultClubs),
-                'number_of_columns' => $defaultColumns,
-                'column_headers' => ['25%', '50%', '75%', '100%'],
-                'club_labels' => $defaultClubs,
+                'number_of_rows' => count(WedgeMatrix::DEFAULT_CLUBS),
+                'number_of_columns' => WedgeMatrix::DEFAULT_COLUMNS,
+                'column_headers' => WedgeMatrix::DEFAULT_COLUMN_HEADERS,
+                'club_labels' => WedgeMatrix::DEFAULT_CLUBS,
                 'selected_row_display_option' => 'Both',
                 'yardage_values' => $defaultYardageValues,
             ]);

@@ -93,9 +93,7 @@ class LoginControllerTest extends TestCase
         Auth::shouldReceive('attempt')->once()->andReturn(false);
         Log::shouldReceive('warning')->once()->with(
             'Log in attempt with invalid credentials detected',
-            [
-                $userEmail,
-            ]
+            ['email' => $userEmail]
         );
 
         $response = $this->postJson(

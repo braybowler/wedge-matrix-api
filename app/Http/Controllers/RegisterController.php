@@ -6,11 +6,12 @@ use App\Exceptions\CouldNotCreateUserException;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Services\User\UserCreationService;
+use Illuminate\Http\JsonResponse;
 use Throwable;
 
 class RegisterController extends Controller
 {
-    public function __invoke(RegisterRequest $request, UserCreationService $userCreationService)
+    public function __invoke(RegisterRequest $request, UserCreationService $userCreationService): JsonResponse
     {
         try {
             $user = $userCreationService->create(

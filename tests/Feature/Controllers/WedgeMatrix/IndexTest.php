@@ -35,7 +35,7 @@ class IndexTest extends TestCase
         $response->assertJsonPath('data.0.number_of_rows', $wedgeMatrix->number_of_rows);
         $response->assertJsonPath('data.0.number_of_columns', $wedgeMatrix->number_of_columns);
         $response->assertJsonPath('data.0.column_headers', $wedgeMatrix->column_headers);
-        $response->assertJsonPath('data.0.values', $wedgeMatrix->values);
+        $response->assertJsonPath('data.0.yardage_values', $wedgeMatrix->yardage_values);
         $response->assertJsonPath('data.0.user_id', $wedgeMatrix->user_id);
     }
 
@@ -61,7 +61,7 @@ class IndexTest extends TestCase
         $response->assertJsonPath('data.0.number_of_rows', $wedgeMatrix->number_of_rows);
         $response->assertJsonPath('data.0.number_of_columns', $wedgeMatrix->number_of_columns);
         $response->assertJsonPath('data.0.column_headers', $wedgeMatrix->column_headers);
-        $response->assertJsonPath('data.0.values', $wedgeMatrix->values);
+        $response->assertJsonPath('data.0.yardage_values', $wedgeMatrix->yardage_values);
         $response->assertJsonPath('data.0.user_id', $wedgeMatrix->user_id);
     }
 
