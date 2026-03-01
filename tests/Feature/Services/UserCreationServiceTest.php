@@ -3,12 +3,14 @@
 namespace Feature\Services;
 
 use App\Exceptions\CouldNotCreateUserException;
+use App\Mail\WelcomeMail;
 use App\Models\User;
 use App\Services\User\UserCreationService;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Mockery;
 use Tests\TestCase;
 
@@ -28,6 +30,18 @@ class UserCreationServiceTest extends TestCase
         $this->assertDatabaseHas('users', [
             'email' => 'test@example.com',
         ]);
+    }
+
+    public function test_sends_welcome_email(): void
+    {
+        Mail::fake();
+
+        $service = app(UserCreationService::class);
+        $service->create('test@example.com', 'password');
+
+        Mail::assertSent(WelcomeMail::class, function ($mail) {
+            return $mail->hasTo('test@example.com');
+        });
     }
 
     public function test_creates_a_user_with_a_hashed_password(): void
