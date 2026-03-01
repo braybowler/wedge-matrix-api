@@ -8,14 +8,17 @@ use App\Http\Controllers\WedgeMatrixDownloadController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('throttle:auth')->group(function () {
-    Route::get('/up', function () {
-        return response()->json(['status' => 'ok']);
-    });
     Route::post('/register', RegisterController::class)->name('register');
     Route::post('/login', LoginController::class)->name('login');
 });
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('throttle:open')->group(function () {
+    Route::get('/up', function () {
+        return response()->json(['status' => 'ok']);
+    });
+});
+
+Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     Route::get('/user', [UserController::class, 'show'])->name('user.show');
     Route::patch('/user', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user', [UserController::class, 'destroy'])->name('user.destroy');
