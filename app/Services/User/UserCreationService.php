@@ -32,7 +32,7 @@ class UserCreationService
                 'club_labels' => WedgeMatrix::DEFAULT_CLUBS,
             ]);
 
-            Mail::to($user->email)->send(new WelcomeMail($user));
+            Mail::mailer('smtp')->to($user->email)->send(new WelcomeMail($user));
 
             return $user;
         } catch (QueryException $e) {

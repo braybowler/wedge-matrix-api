@@ -22,7 +22,8 @@ class UserDeletionService
             $email = $user->email;
             $user->tokens()->delete();
             $user->delete();
-            Mail::to($email)->send(new AccountDeletionMail($email));
+
+            Mail::mailer('smtp')->to($email)->send(new AccountDeletionMail($email));
         } catch (QueryException $e) {
             Log::error(
                 'Failed to delete user',
