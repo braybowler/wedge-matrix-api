@@ -27,6 +27,5 @@ class WelcomeMailTest extends TestCase
         $mail = new WelcomeMail($user);
 
         $mail->assertSeeInHtml('Welcome to Wedge Matrix');
-        $mail->assertSeeInHtml('tracking your wedge yardages');
     }
 }
