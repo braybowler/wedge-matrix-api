@@ -3,12 +3,10 @@
 namespace Feature\Controllers;
 
 use App\Exceptions\CouldNotCreateUserException;
-use App\Mail\WelcomeMail;
 use App\Services\User\UserCreationService;
 use Exception;
 use Facades\App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -62,25 +60,6 @@ class RegisterControllerTest extends TestCase
             ],
             'message',
         ]);
-    }
-
-    public function test_sends_welcome_email_on_successful_registration(): void
-    {
-        Mail::fake();
-
-        $this->postJson(
-            route('register'),
-            [
-                'email' => 'test@example.com',
-                'password' => 'Password1!',
-                'password_confirmation' => 'Password1!',
-                'tos_accepted' => true,
-            ]
-        );
-
-        Mail::assertSent(WelcomeMail::class, function ($mail) {
-            return $mail->hasTo('test@example.com');
-        });
     }
 
     public static function requestProvider(): array

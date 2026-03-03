@@ -3,7 +3,6 @@
 namespace Feature\Services;
 
 use App\Exceptions\CouldNotDeleteUserException;
-use App\Mail\AccountDeletionMail;
 use App\Models\User;
 use App\Models\WedgeMatrix;
 use App\Services\User\UserDeletionService;
@@ -11,7 +10,6 @@ use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Mockery;
 use Tests\TestCase;
 
@@ -58,24 +56,9 @@ class UserDeletionServiceTest extends TestCase
         $this->assertDatabaseCount('personal_access_tokens', 0);
     }
 
-    public function test_sends_account_deletion_email(): void
-    {
-        Mail::fake();
-
-        $user = User::factory()->create();
-
-        $service = app(UserDeletionService::class);
-        $service->delete($user);
-
-        Mail::assertSent(AccountDeletionMail::class, function ($mail) use ($user) {
-            return $mail->hasTo($user->email);
-        });
-    }
-
     public function test_throws_could_not_delete_user_exception_on_query_exception(): void
     {
         $user = Mockery::mock(User::class);
-        $user->shouldReceive('getAttribute')->with('email')->andReturn('test@example.com');
         $user->shouldReceive('tokens->delete')->once();
         $user->shouldReceive('delete')
             ->once()
@@ -95,7 +78,6 @@ class UserDeletionServiceTest extends TestCase
     public function test_rethrows_generic_exceptions(): void
     {
         $user = Mockery::mock(User::class);
-        $user->shouldReceive('getAttribute')->with('email')->andReturn('test@example.com');
         $user->shouldReceive('tokens->delete')->once();
         $user->shouldReceive('delete')
             ->once()
