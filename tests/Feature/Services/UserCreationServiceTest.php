@@ -3,12 +3,14 @@
 namespace Feature\Services;
 
 use App\Exceptions\CouldNotCreateUserException;
+use App\Mail\WelcomeEmail;
 use App\Models\User;
 use App\Services\User\UserCreationService;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Mockery;
 use Tests\TestCase;
 
@@ -73,6 +75,16 @@ class UserCreationServiceTest extends TestCase
 
         $wedgeMatrix = $user->wedgeMatrices()->first();
         $this->assertEquals(['LW', 'SW', 'GW', 'PW'], $wedgeMatrix->club_labels);
+    }
+
+    public function test_sends_welcome_email(): void
+    {
+        Mail::fake();
+
+        $service = app(UserCreationService::class);
+        $service->create('test@example.com', 'password');
+
+        Mail::assertSent(WelcomeEmail::class);
     }
 
     public function test_logs_error_messaging_when_catching_a_query_exception_during_user_creation(): void

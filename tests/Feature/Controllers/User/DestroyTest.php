@@ -3,10 +3,12 @@
 namespace Feature\Controllers\User;
 
 use App\Exceptions\CouldNotDeleteUserException;
+use App\Mail\AccountDeletionMail;
 use App\Models\User;
 use App\Services\User\UserDeletionService;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class DestroyTest extends TestCase
@@ -21,6 +23,17 @@ class DestroyTest extends TestCase
 
         $response->assertNoContent();
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
+    }
+
+    public function test_sends_account_deletion_email_on_successful_delete(): void
+    {
+        Mail::fake();
+
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->deleteJson(route('user.destroy'));
+
+        Mail::assertSent(AccountDeletionMail::class);
     }
 
     public function test_disallows_guest_access_for_delete_requests(): void
