@@ -2,6 +2,7 @@
 
 namespace App\Services\WedgeMatrix;
 
+use App\Enums\ColumnHeaderType;
 use App\Exceptions\CouldNotCreateWedgeMatrixException;
 use App\Exceptions\WedgeMatrixLimitReachedException;
 use App\Models\User;
@@ -17,13 +18,18 @@ class WedgeMatrixCreationService
      * @throws CouldNotCreateWedgeMatrixException
      * @throws Throwable
      */
-    public function create(User $user, ?string $label = null): WedgeMatrix
+    public function create(User $user, ?string $label = null, ?ColumnHeaderType $columnHeaderType = null): WedgeMatrix
     {
         if ($user->wedgeMatrices()->count() >= WedgeMatrix::MAX_PER_USER) {
             throw new WedgeMatrixLimitReachedException(
                 'Wedge matrix limit reached'
             );
         }
+
+        $columnHeaders = match ($columnHeaderType) {
+            ColumnHeaderType::Clock => WedgeMatrix::DEFAULT_CLOCK_COLUMN_HEADERS,
+            default => WedgeMatrix::DEFAULT_COLUMN_HEADERS,
+        };
 
         $emptyCell = ['carry_value' => null, 'total_value' => null];
         $emptyRow = array_fill(0, WedgeMatrix::DEFAULT_COLUMNS, $emptyCell);
@@ -34,7 +40,7 @@ class WedgeMatrixCreationService
                 'label' => $label,
                 'number_of_rows' => count(WedgeMatrix::DEFAULT_CLUBS),
                 'number_of_columns' => WedgeMatrix::DEFAULT_COLUMNS,
-                'column_headers' => WedgeMatrix::DEFAULT_COLUMN_HEADERS,
+                'column_headers' => $columnHeaders,
                 'club_labels' => WedgeMatrix::DEFAULT_CLUBS,
                 'selected_row_display_option' => 'Both',
                 'yardage_values' => $defaultYardageValues,

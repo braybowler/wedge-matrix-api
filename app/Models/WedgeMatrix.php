@@ -14,6 +14,8 @@ class WedgeMatrix extends Model
 
     const DEFAULT_COLUMN_HEADERS = ['25%', '50%', '75%', '100%'];
 
+    const DEFAULT_CLOCK_COLUMN_HEADERS = ['9:00', '10:00', '11:00', '12:00'];
+
     const DEFAULT_COLUMNS = 4;
 
     const MAX_PER_USER = 5;

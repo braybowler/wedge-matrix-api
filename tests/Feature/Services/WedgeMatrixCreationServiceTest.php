@@ -2,6 +2,7 @@
 
 namespace Feature\Services;
 
+use App\Enums\ColumnHeaderType;
 use App\Exceptions\CouldNotCreateWedgeMatrixException;
 use App\Exceptions\WedgeMatrixLimitReachedException;
 use App\Models\User;
@@ -30,6 +31,18 @@ class WedgeMatrixCreationServiceTest extends TestCase
         $this->assertEquals($user->id, $wedgeMatrix->user_id);
         $this->assertEquals(['25%', '50%', '75%', '100%'], $wedgeMatrix->column_headers);
         $this->assertEquals(['LW', 'SW', 'GW', 'PW'], $wedgeMatrix->club_labels);
+        $this->assertDatabaseCount('wedge_matrices', 1);
+    }
+
+    public function test_creates_a_wedge_matrix_with_clock_column_headers(): void
+    {
+        $user = User::factory()->create();
+
+        $service = app(WedgeMatrixCreationService::class);
+        $wedgeMatrix = $service->create($user, null, ColumnHeaderType::Clock);
+
+        $this->assertInstanceOf(WedgeMatrix::class, $wedgeMatrix);
+        $this->assertEquals(['9:00', '10:00', '11:00', '12:00'], $wedgeMatrix->column_headers);
         $this->assertDatabaseCount('wedge_matrices', 1);
     }
 

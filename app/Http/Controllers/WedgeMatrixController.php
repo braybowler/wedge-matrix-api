@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ColumnHeaderType;
 use App\Exceptions\CannotDeleteLastWedgeMatrixException;
 use App\Exceptions\CouldNotCreateWedgeMatrixException;
 use App\Exceptions\CouldNotDeleteWedgeMatrixException;
@@ -45,7 +46,11 @@ class WedgeMatrixController extends Controller
     public function store(StoreWedgeMatrixRequest $request, WedgeMatrixCreationService $wedgeMatrixCreationService): JsonResponse
     {
         try {
-            $wedgeMatrix = $wedgeMatrixCreationService->create($request->user(), $request->input('label'));
+            $wedgeMatrix = $wedgeMatrixCreationService->create(
+                $request->user(),
+                $request->input('label'),
+                ColumnHeaderType::tryFrom($request->input('column_header_type')),
+            );
 
             return (new WedgeMatrixResource($wedgeMatrix))
                 ->response()

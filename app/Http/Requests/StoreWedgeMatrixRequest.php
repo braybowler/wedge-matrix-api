@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ColumnHeaderType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreWedgeMatrixRequest extends FormRequest
 {
@@ -20,6 +22,7 @@ class StoreWedgeMatrixRequest extends FormRequest
     {
         return [
             'label' => 'nullable|string|max:255',
+            'column_header_type' => ['nullable', new Enum(ColumnHeaderType::class)],
         ];
     }
 }

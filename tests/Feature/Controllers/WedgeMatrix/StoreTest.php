@@ -115,6 +115,31 @@ class StoreTest extends TestCase
         $response->assertJsonPath('message', 'Unexpected server error while creating wedge matrix');
     }
 
+    public function test_creates_wedge_matrix_with_clock_column_headers(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->postJson(
+            route('wedge-matrix.store'),
+            ['column_header_type' => 'clock']
+        );
+
+        $response->assertCreated();
+        $response->assertJsonPath('data.column_headers', ['9:00', '10:00', '11:00', '12:00']);
+    }
+
+    public function test_rejects_invalid_column_header_type(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->postJson(
+            route('wedge-matrix.store'),
+            ['column_header_type' => 'invalid']
+        );
+
+        $response->assertUnprocessable();
+    }
+
     public function test_creating_fifth_matrix_succeeds(): void
     {
         $user = User::factory()->create();
