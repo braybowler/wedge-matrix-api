@@ -31,6 +31,8 @@ class WedgeMatrixCreationServiceTest extends TestCase
         $this->assertEquals($user->id, $wedgeMatrix->user_id);
         $this->assertEquals(['25%', '50%', '75%', '100%'], $wedgeMatrix->column_headers);
         $this->assertEquals(['LW', 'SW', 'GW', 'PW'], $wedgeMatrix->club_labels);
+        $this->assertNull($wedgeMatrix->club_lofts);
+        $this->assertEquals('title', $wedgeMatrix->club_label_display_mode);
         $this->assertDatabaseCount('wedge_matrices', 1);
     }
 

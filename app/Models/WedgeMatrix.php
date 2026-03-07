@@ -31,6 +31,8 @@ class WedgeMatrix extends Model
         'number_of_columns',
         'column_headers',
         'club_labels',
+        'club_lofts',
+        'club_label_display_mode',
         'selected_row_display_option',
         'yardage_values',
     ];
@@ -60,6 +62,7 @@ class WedgeMatrix extends Model
         return [
             'column_headers' => 'array',
             'club_labels' => 'array',
+            'club_lofts' => 'array',
             'yardage_values' => 'array',
         ];
     }

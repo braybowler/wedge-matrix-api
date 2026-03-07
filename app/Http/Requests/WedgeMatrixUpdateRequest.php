@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ClubLabelDisplayMode;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class WedgeMatrixUpdateRequest extends FormRequest
 {
@@ -26,6 +28,9 @@ class WedgeMatrixUpdateRequest extends FormRequest
             'column_headers.*' => 'required_with:column_headers|string|max:255',
             'club_labels' => 'sometimes|array|min:1|max:6',
             'club_labels.*' => 'required_with:club_labels|string|in:LW,SW,GW,AW,UW,PW',
+            'club_lofts' => 'sometimes|array|min:1|max:6',
+            'club_lofts.*' => 'nullable|integer|min:1|max:90',
+            'club_label_display_mode' => ['sometimes', 'string', new Enum(ClubLabelDisplayMode::class)],
             'selected_row_display_option' => [
                 'sometimes',
                 'string',

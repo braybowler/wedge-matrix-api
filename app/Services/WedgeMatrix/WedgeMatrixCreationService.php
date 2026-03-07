@@ -42,6 +42,8 @@ class WedgeMatrixCreationService
                 'number_of_columns' => WedgeMatrix::DEFAULT_COLUMNS,
                 'column_headers' => $columnHeaders,
                 'club_labels' => WedgeMatrix::DEFAULT_CLUBS,
+                'club_lofts' => null,
+                'club_label_display_mode' => 'title',
                 'selected_row_display_option' => 'Both',
                 'yardage_values' => $defaultYardageValues,
             ]);

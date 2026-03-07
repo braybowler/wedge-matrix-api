@@ -67,8 +67,14 @@
         </thead>
         <tbody>
             @foreach ($wedgeMatrix->club_labels ?? [] as $rowIndex => $clubLabel)
+                @php
+                    $displayMode = $wedgeMatrix->club_label_display_mode ?? 'title';
+                    $displayLabel = ($displayMode === 'loft' && isset($wedgeMatrix->club_lofts[$rowIndex]))
+                        ? $wedgeMatrix->club_lofts[$rowIndex] . '°'
+                        : $clubLabel;
+                @endphp
                 <tr>
-                    <td>{{ $clubLabel }}</td>
+                    <td>{{ $displayLabel }}</td>
                     @foreach ($wedgeMatrix->column_headers ?? [] as $colIndex => $header)
                         <td>
                             @php

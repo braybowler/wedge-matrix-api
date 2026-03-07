@@ -133,6 +133,24 @@ class UpdateTest extends TestCase
             'club_labels must have at least 1 item' => [
                 ['club_labels' => []],
             ],
+            'club_lofts must be an array' => [
+                ['club_lofts' => 'not-an-array'],
+            ],
+            'club_lofts items must be integers' => [
+                ['club_lofts' => ['abc']],
+            ],
+            'club_lofts items must be at least 1' => [
+                ['club_lofts' => [0]],
+            ],
+            'club_lofts items must be at most 90' => [
+                ['club_lofts' => [91]],
+            ],
+            'club_lofts must have at most 6 items' => [
+                ['club_lofts' => [60, 56, 52, 48, 46, 44, 40]],
+            ],
+            'club_label_display_mode must be a valid mode' => [
+                ['club_label_display_mode' => 'invalid'],
+            ],
         ];
     }
 
@@ -163,6 +181,51 @@ class UpdateTest extends TestCase
         $response->assertNoContent();
         $wedgeMatrix->refresh();
         $this->assertEquals(['LW', 'SW', 'GW', 'AW', 'UW', 'PW'], $wedgeMatrix->club_labels);
+    }
+
+    public function test_successfully_updates_club_lofts(): void
+    {
+        $user = User::factory()->create();
+        $wedgeMatrix = WedgeMatrix::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->putJson(
+            route('wedge-matrix.update', $wedgeMatrix),
+            ['club_lofts' => [60, 56, 52, 46]],
+        );
+
+        $response->assertNoContent();
+        $wedgeMatrix->refresh();
+        $this->assertEquals([60, 56, 52, 46], $wedgeMatrix->club_lofts);
+    }
+
+    public function test_successfully_updates_club_label_display_mode(): void
+    {
+        $user = User::factory()->create();
+        $wedgeMatrix = WedgeMatrix::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->putJson(
+            route('wedge-matrix.update', $wedgeMatrix),
+            ['club_label_display_mode' => 'loft'],
+        );
+
+        $response->assertNoContent();
+        $wedgeMatrix->refresh();
+        $this->assertEquals('loft', $wedgeMatrix->club_label_display_mode);
+    }
+
+    public function test_allows_null_values_in_club_lofts(): void
+    {
+        $user = User::factory()->create();
+        $wedgeMatrix = WedgeMatrix::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->putJson(
+            route('wedge-matrix.update', $wedgeMatrix),
+            ['club_lofts' => [60, null, 52, null]],
+        );
+
+        $response->assertNoContent();
+        $wedgeMatrix->refresh();
+        $this->assertEquals([60, null, 52, null], $wedgeMatrix->club_lofts);
     }
 
     public function test_responds_with_a_json_payload_when_catching_a_wedge_matrix_update_error_during_update_requests(): void

@@ -20,6 +20,8 @@ class WedgeMatrixFactory extends Factory
             'number_of_columns' => 4,
             'column_headers' => $this->faker->words(4),
             'club_labels' => ['LW', 'SW', 'GW', 'PW'],
+            'club_lofts' => null,
+            'club_label_display_mode' => 'title',
             'selected_row_display_option' => 'Both',
             'yardage_values' => null,
             'created_at' => Carbon::now(),

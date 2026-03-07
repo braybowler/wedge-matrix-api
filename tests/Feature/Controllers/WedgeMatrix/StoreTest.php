@@ -33,6 +33,8 @@ class StoreTest extends TestCase
                 'number_of_columns',
                 'column_headers',
                 'club_labels',
+                'club_lofts',
+                'club_label_display_mode',
                 'selected_row_display_option',
                 'yardage_values',
             ],
@@ -55,6 +57,8 @@ class StoreTest extends TestCase
         $response->assertCreated();
         $response->assertJsonPath('data.column_headers', ['25%', '50%', '75%', '100%']);
         $response->assertJsonPath('data.club_labels', ['LW', 'SW', 'GW', 'PW']);
+        $response->assertJsonPath('data.club_lofts', null);
+        $response->assertJsonPath('data.club_label_display_mode', 'title');
         $response->assertJsonPath('data.user_id', $user->id);
     }
 

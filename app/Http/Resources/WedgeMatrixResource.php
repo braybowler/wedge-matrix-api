@@ -19,6 +19,8 @@ class WedgeMatrixResource extends JsonResource
             'number_of_columns' => $this->number_of_columns,
             'column_headers' => $this->column_headers,
             'club_labels' => $this->club_labels,
+            'club_lofts' => $this->club_lofts,
+            'club_label_display_mode' => $this->club_label_display_mode,
             'selected_row_display_option' => $this->selected_row_display_option,
             'yardage_values' => $this->yardage_values,
         ];

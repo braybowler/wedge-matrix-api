@@ -40,6 +40,33 @@ class DownloadTest extends TestCase
         $response->assertHeader('content-disposition', 'attachment; filename=wedge-matrix.pdf');
     }
 
+    public function test_returns_pdf_with_loft_display_mode(): void
+    {
+        $user = User::factory()->create();
+        $wedgeMatrix = WedgeMatrix::factory()->create([
+            'user_id' => $user->id,
+            'column_headers' => ['25%', '50%', '75%', '100%'],
+            'club_labels' => ['LW', 'SW', 'GW', 'PW'],
+            'club_lofts' => [60, 56, 52, 46],
+            'club_label_display_mode' => 'loft',
+            'yardage_values' => [
+                [
+                    ['carry_value' => 20, 'total_value' => 25],
+                    ['carry_value' => 40, 'total_value' => 50],
+                    ['carry_value' => 60, 'total_value' => 75],
+                    ['carry_value' => 80, 'total_value' => 100],
+                ],
+            ],
+        ]);
+
+        $response = $this->actingAs($user)->getJson(
+            route('wedge-matrix.download', $wedgeMatrix)
+        );
+
+        $response->assertOk();
+        $response->assertHeader('content-type', 'application/pdf');
+    }
+
     public function test_returns_403_when_user_does_not_own_matrix(): void
     {
         $user = User::factory()->create();
