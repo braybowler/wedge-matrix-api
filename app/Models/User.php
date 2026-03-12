@@ -45,6 +45,11 @@ class User extends Authenticatable
         return $this->hasMany(WedgeMatrix::class);
     }
 
+    public function practiceSessions(): HasMany
+    {
+        return $this->hasMany(PracticeSession::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *

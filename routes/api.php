@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PracticeSessionController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WedgeMatrixController;
@@ -37,4 +38,13 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 
     Route::get('/wedge-matrix/{wedgeMatrix}/download', WedgeMatrixDownloadController::class)
         ->name('wedge-matrix.download');
+
+    Route::get('/practice-session', [PracticeSessionController::class, 'index'])
+        ->name('practice-session.index');
+
+    Route::post('/practice-session', [PracticeSessionController::class, 'store'])
+        ->name('practice-session.store');
+
+    Route::delete('/practice-session/{practiceSession}', [PracticeSessionController::class, 'destroy'])
+        ->name('practice-session.destroy');
 });
