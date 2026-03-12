@@ -64,6 +64,11 @@ class WedgeMatrixController extends Controller
                 'message' => 'Could not create wedge matrix',
             ], 400);
         } catch (Throwable $e) {
+            Log::error(
+                'Server error while creating wedge matrix: (POST /api/wedge-matrix)',
+                [$e->getMessage(), $e->getTrace()],
+            );
+
             return response()->json([
                 'message' => 'Unexpected server error while creating wedge matrix',
             ], 500);
@@ -81,6 +86,11 @@ class WedgeMatrixController extends Controller
                 'message' => 'Could not update wedge matrix',
             ], 400);
         } catch (Throwable $e) {
+            Log::error(
+                'Server error while updating wedge matrix: (PUT /api/wedge-matrix/{id})',
+                [$e->getMessage(), $e->getTrace()],
+            );
+
             return response()->json([
                 'message' => 'Unexpected server error while updating wedge matrix',
             ], 500);
@@ -102,6 +112,11 @@ class WedgeMatrixController extends Controller
                 'message' => 'Could not delete wedge matrix',
             ], 400);
         } catch (Throwable $e) {
+            Log::error(
+                'Server error while deleting wedge matrix: (DELETE /api/wedge-matrix/{id})',
+                [$e->getMessage(), $e->getTrace()],
+            );
+
             return response()->json([
                 'message' => 'Unexpected server error while deleting wedge matrix',
             ], 500);

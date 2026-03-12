@@ -9,6 +9,7 @@ use App\Services\User\UserDeletionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class UserController extends Controller
@@ -36,6 +37,11 @@ class UserController extends Controller
                 'message' => 'Could not delete user',
             ], 400);
         } catch (Throwable $e) {
+            Log::error(
+                'Server error while deleting user: (DELETE /api/user)',
+                [$e->getMessage(), $e->getTrace()],
+            );
+
             return response()->json([
                 'message' => 'Unexpected server error while deleting user',
             ], 500);
