@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PracticeSessionController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WedgeMatrixController;
 use App\Http\Controllers\WedgeMatrixDownloadController;
@@ -11,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('throttle:auth')->group(function () {
     Route::post('/register', RegisterController::class)->name('register');
     Route::post('/login', LoginController::class)->name('login');
+    Route::post('/forgot-password', ForgotPasswordController::class)->name('password.forgot');
+    Route::post('/reset-password', ResetPasswordController::class)->name('password.reset');
 });
 
 Route::middleware('throttle:open')->group(function () {

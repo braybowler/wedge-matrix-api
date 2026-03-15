@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Mail\PasswordResetMail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -39,6 +41,13 @@ class User extends Authenticatable
     ];
 
     protected $with = ['wedgeMatrices'];
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $resetUrl = config('app.url').'/reset-password?token='.$token.'&email='.urlencode($this->email);
+
+        Mail::to($this->email)->send(new PasswordResetMail($resetUrl));
+    }
 
     public function wedgeMatrices(): HasMany
     {
