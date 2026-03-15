@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\WedgeMatrix;
 
 use App\Enums\ClubLabelDisplayMode;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
-class WedgeMatrixUpdateRequest extends FormRequest
+class UpdateWedgeMatrixRequest extends FormRequest
 {
     public function authorize(): bool
     {

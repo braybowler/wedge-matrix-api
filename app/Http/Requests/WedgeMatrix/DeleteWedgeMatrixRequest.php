@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\WedgeMatrix;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class WedgeMatrixDeleteRequest extends FormRequest
+class DeleteWedgeMatrixRequest extends FormRequest
 {
     public function authorize(): bool
     {

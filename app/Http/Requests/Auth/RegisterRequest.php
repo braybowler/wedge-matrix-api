@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
-use App\Enums\ColumnHeaderType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\Password;
 
-class StoreWedgeMatrixRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -21,8 +20,9 @@ class StoreWedgeMatrixRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'label' => 'nullable|string|max:255',
-            'column_header_type' => ['nullable', new Enum(ColumnHeaderType::class)],
+            'email' => 'required|email|unique:users,email',
+            'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()->symbols()],
+            'tos_accepted' => ['required', 'accepted'],
         ];
     }
 }

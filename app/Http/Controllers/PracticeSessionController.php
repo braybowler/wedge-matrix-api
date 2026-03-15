@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\CouldNotCreatePracticeSessionException;
 use App\Exceptions\CouldNotDeletePracticeSessionException;
-use App\Http\Requests\DeletePracticeSessionRequest;
-use App\Http\Requests\StorePracticeSessionRequest;
+use App\Http\Requests\PracticeSession\DeletePracticeSessionRequest;
+use App\Http\Requests\PracticeSession\StorePracticeSessionRequest;
 use App\Http\Resources\PracticeSessionResource;
 use App\Models\PracticeSession;
 use App\Repositories\PracticeSession\PracticeSessionRepository;

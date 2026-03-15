@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CouldNotDownloadWedgeMatrixException;
-use App\Http\Requests\WedgeMatrixDownloadRequest;
+use App\Http\Requests\WedgeMatrix\DownloadWedgeMatrixRequest;
 use App\Models\WedgeMatrix;
 use App\Services\WedgeMatrix\WedgeMatrixDownloadService;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +12,7 @@ use Throwable;
 
 class WedgeMatrixDownloadController extends Controller
 {
-    public function __invoke(WedgeMatrixDownloadRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixDownloadService $service): Response
+    public function __invoke(DownloadWedgeMatrixRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixDownloadService $service): Response
     {
         try {
             $pdf = $service->generatePdf($wedgeMatrix);

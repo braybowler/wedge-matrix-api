@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\PracticeSession;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserUpdateRequest extends FormRequest
+class DeletePracticeSessionRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return $this->route('practiceSession')->user_id === $this->user()->id;
     }
 
     /**
@@ -18,8 +18,6 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'has_dismissed_tutorial' => 'required|boolean',
-        ];
+        return [];
     }
 }

@@ -8,9 +8,9 @@ use App\Exceptions\CouldNotCreateWedgeMatrixException;
 use App\Exceptions\CouldNotDeleteWedgeMatrixException;
 use App\Exceptions\CouldNotUpdateWedgeMatrixException;
 use App\Exceptions\WedgeMatrixLimitReachedException;
-use App\Http\Requests\StoreWedgeMatrixRequest;
-use App\Http\Requests\WedgeMatrixDeleteRequest;
-use App\Http\Requests\WedgeMatrixUpdateRequest;
+use App\Http\Requests\WedgeMatrix\DeleteWedgeMatrixRequest;
+use App\Http\Requests\WedgeMatrix\StoreWedgeMatrixRequest;
+use App\Http\Requests\WedgeMatrix\UpdateWedgeMatrixRequest;
 use App\Http\Resources\WedgeMatrixResource;
 use App\Models\WedgeMatrix;
 use App\Repositories\WedgeMatrix\WedgeMatrixRepository;
@@ -75,7 +75,7 @@ class WedgeMatrixController extends Controller
         }
     }
 
-    public function update(WedgeMatrixUpdateRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixUpdateService $wedgeMatrixUpdateService): Response|JsonResponse
+    public function update(UpdateWedgeMatrixRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixUpdateService $wedgeMatrixUpdateService): Response|JsonResponse
     {
         try {
             $wedgeMatrixUpdateService->update($wedgeMatrix, $request->validated());
@@ -97,7 +97,7 @@ class WedgeMatrixController extends Controller
         }
     }
 
-    public function destroy(WedgeMatrixDeleteRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixDeletionService $wedgeMatrixDeletionService): Response|JsonResponse
+    public function destroy(DeleteWedgeMatrixRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixDeletionService $wedgeMatrixDeletionService): Response|JsonResponse
     {
         try {
             $wedgeMatrixDeletionService->delete($wedgeMatrix);

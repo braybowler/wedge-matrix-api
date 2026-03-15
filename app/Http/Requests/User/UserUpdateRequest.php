@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class WedgeMatrixDownloadRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->route('wedgeMatrix')->user_id === $this->user()->id;
+        return true;
     }
 
     /**
@@ -18,6 +18,8 @@ class WedgeMatrixDownloadRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'has_dismissed_tutorial' => 'required|boolean',
+        ];
     }
 }
