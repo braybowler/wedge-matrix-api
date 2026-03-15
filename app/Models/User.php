@@ -44,7 +44,7 @@ class User extends Authenticatable
 
     public function sendPasswordResetNotification($token): void
     {
-        $resetUrl = config('app.url').'/reset-password?token='.$token.'&email='.urlencode($this->email);
+        $resetUrl = config('app.frontend_url').'/reset-password?token='.$token.'&email='.urlencode($this->email);
 
         Mail::to($this->email)->send(new PasswordResetMail($resetUrl));
     }
