@@ -29,13 +29,16 @@ class StorePracticeSessionRequest extends FormRequest
                     }
                 },
             ],
-            'shot_count' => 'required|integer|in:5,10,15',
+            'mode' => 'sometimes|string|in:gauntlet,drill',
+            'shot_count' => 'required|integer|min:1',
             'shots' => 'required|array',
             'shots.*' => 'required|array',
             'shots.*.shot_number' => 'required|integer|min:1',
-            'shots.*.target_yards' => 'required|integer|min:5',
+            'shots.*.target_yards' => 'required|numeric|min:0',
             'shots.*.actual_carry' => 'required|numeric|min:0|max:999',
             'shots.*.difference' => 'required|numeric|min:0',
+            'shots.*.club_label' => 'sometimes|string',
+            'shots.*.swing_label' => 'sometimes|string',
             'average_difference' => 'required|numeric|min:0',
         ];
     }

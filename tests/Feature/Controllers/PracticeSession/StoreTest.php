@@ -132,7 +132,7 @@ class StoreTest extends TestCase
     {
         $user = User::factory()->create();
         $payload = $this->validPayload($user->id);
-        $payload['shots'][0]['target_yards'] = 2;
+        $payload['shots'][0]['actual_carry'] = -1;
 
         $response = $this->actingAs($user)->postJson(
             route('practice-session.store'),

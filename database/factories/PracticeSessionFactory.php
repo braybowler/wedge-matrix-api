@@ -35,6 +35,7 @@ class PracticeSessionFactory extends Factory
         return [
             'user_id' => User::factory(),
             'wedge_matrix_id' => WedgeMatrix::factory(),
+            'mode' => 'gauntlet',
             'shot_count' => $shotCount,
             'shots' => $shots,
             'average_difference' => round($totalDifference / $shotCount, 1),

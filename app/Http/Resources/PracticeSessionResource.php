@@ -15,6 +15,7 @@ class PracticeSessionResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'wedge_matrix_id' => $this->wedge_matrix_id,
+            'mode' => $this->mode,
             'shot_count' => $this->shot_count,
             'shots' => $this->shots,
             'average_difference' => $this->average_difference,

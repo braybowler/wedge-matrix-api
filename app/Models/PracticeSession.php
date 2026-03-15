@@ -18,6 +18,7 @@ class PracticeSession extends Model
     protected $fillable = [
         'user_id',
         'wedge_matrix_id',
+        'mode',
         'shot_count',
         'shots',
         'average_difference',
