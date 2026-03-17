@@ -67,6 +67,38 @@ class DownloadTest extends TestCase
         $response->assertHeader('content-type', 'application/pdf');
     }
 
+    public function test_returns_pdf_with_truncated_columns_when_column_headers_exceed_number_of_columns(): void
+    {
+        $user = User::factory()->create();
+        $wedgeMatrix = WedgeMatrix::factory()->create([
+            'user_id' => $user->id,
+            'number_of_columns' => 3,
+            'column_headers' => ['50%', '75%', '100%', '100%'],
+            'club_labels' => ['LW', 'SW'],
+            'yardage_values' => [
+                [
+                    ['carry_value' => 40, 'total_value' => 50],
+                    ['carry_value' => 60, 'total_value' => 75],
+                    ['carry_value' => 80, 'total_value' => 100],
+                    ['carry_value' => 80, 'total_value' => 100],
+                ],
+                [
+                    ['carry_value' => 50, 'total_value' => 60],
+                    ['carry_value' => 70, 'total_value' => 85],
+                    ['carry_value' => 90, 'total_value' => 110],
+                    ['carry_value' => 90, 'total_value' => 110],
+                ],
+            ],
+        ]);
+
+        $response = $this->actingAs($user)->getJson(
+            route('wedge-matrix.download', $wedgeMatrix)
+        );
+
+        $response->assertOk();
+        $response->assertHeader('content-type', 'application/pdf');
+    }
+
     public function test_returns_403_when_user_does_not_own_matrix(): void
     {
         $user = User::factory()->create();

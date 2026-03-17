@@ -54,13 +54,17 @@
     </style>
 </head>
 <body>
+    @php
+        $columns = array_slice($wedgeMatrix->column_headers ?? [], 0, $wedgeMatrix->number_of_columns);
+    @endphp
+
     <h1>{{ $wedgeMatrix->label ?? 'Wedge Matrix' }}</h1>
 
     <table>
         <thead>
             <tr>
                 <th></th>
-                @foreach ($wedgeMatrix->column_headers ?? [] as $header)
+                @foreach ($columns as $header)
                     <th>{{ $header }}</th>
                 @endforeach
             </tr>
@@ -75,7 +79,7 @@
                 @endphp
                 <tr>
                     <td>{{ $displayLabel }}</td>
-                    @foreach ($wedgeMatrix->column_headers ?? [] as $colIndex => $header)
+                    @foreach ($columns as $colIndex => $header)
                         <td>
                             @php
                                 $cell = $wedgeMatrix->yardage_values[$rowIndex][$colIndex] ?? null;
