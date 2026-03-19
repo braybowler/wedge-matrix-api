@@ -29,7 +29,7 @@ class WedgeMatrixDeletionService
         } catch (QueryException $e) {
             Log::error(
                 'Failed to delete wedge matrix',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             throw new CouldNotDeleteWedgeMatrixException(
@@ -39,7 +39,7 @@ class WedgeMatrixDeletionService
         } catch (Throwable $e) {
             Log::error(
                 'Server error while deleting wedge matrix',
-                [$e->getMessage(), $e->getTrace()]
+                ['exception' => $e]
             );
 
             throw $e;

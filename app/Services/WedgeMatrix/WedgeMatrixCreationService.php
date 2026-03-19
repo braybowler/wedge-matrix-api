@@ -50,7 +50,7 @@ class WedgeMatrixCreationService
         } catch (QueryException $e) {
             Log::error(
                 'Failed to create wedge matrix',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             throw new CouldNotCreateWedgeMatrixException(
@@ -60,7 +60,7 @@ class WedgeMatrixCreationService
         } catch (Throwable $e) {
             Log::error(
                 'Server error while creating wedge matrix',
-                [$e->getMessage(), $e->getTrace()]
+                ['exception' => $e]
             );
 
             throw $e;

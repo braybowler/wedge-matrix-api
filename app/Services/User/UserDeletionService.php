@@ -6,6 +6,7 @@ use App\Exceptions\CouldNotDeleteUserException;
 use App\Mail\AccountDeletionMail;
 use App\Models\User;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
@@ -21,14 +22,16 @@ class UserDeletionService
         $email = $user->email;
 
         try {
-            $user->tokens()->delete();
-            $user->delete();
+            DB::transaction(function () use ($user) {
+                $user->tokens()->delete();
+                $user->delete();
+            });
 
             Mail::to($email)->send(new AccountDeletionMail);
         } catch (QueryException $e) {
             Log::error(
                 'Failed to delete user',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             throw new CouldNotDeleteUserException(
@@ -38,7 +41,7 @@ class UserDeletionService
         } catch (Throwable $e) {
             Log::error(
                 'Server error while deleting user',
-                [$e->getMessage(), $e->getTrace()]
+                ['exception' => $e]
             );
 
             throw $e;

@@ -22,7 +22,7 @@ class PracticeSessionCreationService
         } catch (QueryException $e) {
             Log::error(
                 'Failed to create practice session',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             throw new CouldNotCreatePracticeSessionException(
@@ -32,7 +32,7 @@ class PracticeSessionCreationService
         } catch (Throwable $e) {
             Log::error(
                 'Server error while creating practice session',
-                [$e->getMessage(), $e->getTrace()]
+                ['exception' => $e]
             );
 
             throw $e;

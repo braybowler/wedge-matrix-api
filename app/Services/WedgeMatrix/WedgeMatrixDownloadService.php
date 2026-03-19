@@ -23,7 +23,7 @@ class WedgeMatrixDownloadService
         } catch (Throwable $e) {
             Log::error(
                 'Failed to generate wedge matrix PDF',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             throw new CouldNotDownloadWedgeMatrixException(

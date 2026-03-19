@@ -21,7 +21,7 @@ class WedgeMatrixUpdateService
         } catch (QueryException $e) {
             Log::error(
                 'Failed to update wedge matrix',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             throw new CouldNotUpdateWedgeMatrixException(
@@ -31,7 +31,7 @@ class WedgeMatrixUpdateService
         } catch (Throwable $e) {
             Log::error(
                 'Server error while updating wedge matrix',
-                [$e->getMessage(), $e->getTrace()]
+                ['exception' => $e]
             );
 
             throw $e;

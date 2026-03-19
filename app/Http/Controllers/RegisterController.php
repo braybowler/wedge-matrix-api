@@ -29,6 +29,8 @@ class RegisterController extends Controller
             ], 500);
         }
 
+        $user->load('wedgeMatrices');
+
         return (new UserResource($user))
             ->additional(['message' => 'User registered successfully'])
             ->response()

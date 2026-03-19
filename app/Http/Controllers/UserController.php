@@ -16,14 +16,14 @@ class UserController extends Controller
 {
     public function show(Request $request): UserResource
     {
-        return new UserResource($request->user());
+        return new UserResource($request->user()->load('wedgeMatrices'));
     }
 
     public function update(UserUpdateRequest $request): UserResource
     {
         $request->user()->update($request->validated());
 
-        return new UserResource($request->user());
+        return new UserResource($request->user()->load('wedgeMatrices'));
     }
 
     public function destroy(Request $request, UserDeletionService $userDeletionService): Response|JsonResponse
@@ -39,7 +39,7 @@ class UserController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while deleting user: (DELETE /api/user)',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([

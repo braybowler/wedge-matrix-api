@@ -40,8 +40,6 @@ class User extends Authenticatable
         'tos_accepted_at',
     ];
 
-    protected $with = ['wedgeMatrices'];
-
     public function sendPasswordResetNotification($token): void
     {
         $resetUrl = config('app.frontend_url').'/reset-password?token='.$token.'&email='.urlencode($this->email);

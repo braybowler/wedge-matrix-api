@@ -150,4 +150,44 @@ class UserCreationServiceTest extends TestCase
         $service = app(UserCreationService::class);
         $service->create($email, $password);
     }
+
+    public function test_user_and_matrix_are_created_atomically(): void
+    {
+        $service = app(UserCreationService::class);
+        $service->create('test@example.com', 'password');
+
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('wedge_matrices', 1);
+    }
+
+    public function test_neither_user_nor_matrix_exists_when_transaction_fails(): void
+    {
+        User::factory()->create(['email' => 'test@example.com']);
+
+        try {
+            $service = app(UserCreationService::class);
+            $service->create('test@example.com', 'password');
+        } catch (CouldNotCreateUserException) {
+            // expected
+        }
+
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('wedge_matrices', 0);
+    }
+
+    public function test_welcome_email_is_not_sent_when_transaction_fails(): void
+    {
+        Mail::fake();
+
+        User::factory()->create(['email' => 'test@example.com']);
+
+        try {
+            $service = app(UserCreationService::class);
+            $service->create('test@example.com', 'password');
+        } catch (CouldNotCreateUserException) {
+            // expected
+        }
+
+        Mail::assertNothingSent();
+    }
 }

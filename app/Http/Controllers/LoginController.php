@@ -28,6 +28,7 @@ class LoginController extends Controller
             }
 
             $user = Auth::user();
+            $user->load('wedgeMatrices');
             $token = $user->createToken('wedge-matrix')->plainTextToken;
 
             return response()->json([
@@ -38,7 +39,7 @@ class LoginController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while logging in',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([

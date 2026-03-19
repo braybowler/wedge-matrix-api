@@ -21,7 +21,7 @@ class PracticeSessionDeletionService
         } catch (QueryException $e) {
             Log::error(
                 'Failed to delete practice session',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             throw new CouldNotDeletePracticeSessionException(
@@ -31,7 +31,7 @@ class PracticeSessionDeletionService
         } catch (Throwable $e) {
             Log::error(
                 'Server error while deleting practice session',
-                [$e->getMessage(), $e->getTrace()]
+                ['exception' => $e]
             );
 
             throw $e;
