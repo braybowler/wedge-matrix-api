@@ -39,7 +39,7 @@ class ResetPasswordController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while resetting password',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([

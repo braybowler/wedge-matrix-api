@@ -34,7 +34,7 @@ class WedgeMatrixController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while fetching wedge matrices: (GET /api/wedge-matrix)',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([
@@ -66,7 +66,7 @@ class WedgeMatrixController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while creating wedge matrix: (POST /api/wedge-matrix)',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([
@@ -88,7 +88,7 @@ class WedgeMatrixController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while updating wedge matrix: (PUT /api/wedge-matrix/{id})',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([
@@ -114,7 +114,7 @@ class WedgeMatrixController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while deleting wedge matrix: (DELETE /api/wedge-matrix/{id})',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([

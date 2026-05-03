@@ -21,7 +21,7 @@ class ForgotPasswordController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while sending password reset link',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([

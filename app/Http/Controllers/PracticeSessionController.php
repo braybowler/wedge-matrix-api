@@ -28,7 +28,7 @@ class PracticeSessionController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while fetching practice sessions: (GET /api/practice-session)',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([
@@ -55,7 +55,7 @@ class PracticeSessionController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while creating practice session: (POST /api/practice-session)',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([
@@ -77,7 +77,7 @@ class PracticeSessionController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while deleting practice session: (DELETE /api/practice-session/{id})',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([

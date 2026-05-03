@@ -25,7 +25,7 @@ class WedgeMatrixDownloadController extends Controller
         } catch (Throwable $e) {
             Log::error(
                 'Server error while downloading wedge matrix: (GET /api/wedge-matrix/{wedgeMatrix}/download)',
-                [$e->getMessage(), $e->getTrace()],
+                ['exception' => $e],
             );
 
             return response()->json([
