@@ -3,9 +3,10 @@
 namespace App\Services\User;
 
 use App\Exceptions\CouldNotCreateUserException;
+use App\Exceptions\CouldNotCreateWedgeMatrixException;
 use App\Mail\WelcomeEmail;
 use App\Models\User;
-use App\Models\WedgeMatrix;
+use App\Services\WedgeMatrix\WedgeMatrixCreationService;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,10 @@ use Throwable;
 
 class UserCreationService
 {
+    public function __construct(
+        private readonly WedgeMatrixCreationService $wedgeMatrixCreationService,
+    ) {}
+
     /**
      * @throws CouldNotCreateUserException
      * @throws Throwable
@@ -29,10 +34,7 @@ class UserCreationService
                     'tos_accepted_at' => $tosAccepted ? now() : null,
                 ]);
 
-                $user->wedgeMatrices()->create([
-                    'column_headers' => WedgeMatrix::DEFAULT_COLUMN_HEADERS,
-                    'club_labels' => WedgeMatrix::DEFAULT_CLUBS,
-                ]);
+                $this->wedgeMatrixCreationService->create($user);
 
                 return $user;
             });
@@ -40,7 +42,7 @@ class UserCreationService
             Mail::to($user->email)->send(new WelcomeEmail);
 
             return $user;
-        } catch (QueryException $e) {
+        } catch (QueryException|CouldNotCreateWedgeMatrixException $e) {
             Log::error(
                 'Failed to create user while registering',
                 ['exception' => $e],
