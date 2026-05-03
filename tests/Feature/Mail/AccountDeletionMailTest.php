@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Mail;
+namespace Tests\Feature\Mail;
 
 use App\Mail\AccountDeletionMail;
 use Tests\TestCase;

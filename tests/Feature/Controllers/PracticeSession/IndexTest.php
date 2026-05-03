@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers\PracticeSession;
+namespace Tests\Feature\Controllers\PracticeSession;
 
 use App\Models\PracticeSession;
 use App\Models\User;

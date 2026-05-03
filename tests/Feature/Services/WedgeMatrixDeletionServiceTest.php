@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Services;
+namespace Tests\Feature\Services;
 
 use App\Exceptions\CannotDeleteLastWedgeMatrixException;
 use App\Exceptions\CouldNotDeleteWedgeMatrixException;

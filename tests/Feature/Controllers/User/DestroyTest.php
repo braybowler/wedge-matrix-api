@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers\User;
+namespace Tests\Feature\Controllers\User;
 
 use App\Exceptions\CouldNotDeleteUserException;
 use App\Mail\AccountDeletionMail;
