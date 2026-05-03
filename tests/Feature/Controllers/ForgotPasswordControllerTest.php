@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers;
+namespace Tests\Feature\Controllers;
 
 use App\Mail\PasswordResetMail;
 use App\Models\User;

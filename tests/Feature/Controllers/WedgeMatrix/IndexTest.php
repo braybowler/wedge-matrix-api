@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers\WedgeMatrix;
+namespace Tests\Feature\Controllers\WedgeMatrix;
 
 use App\Models\User;
 use App\Repositories\WedgeMatrix\WedgeMatrixRepository;

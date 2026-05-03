@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Controllers\WedgeMatrix;
+namespace Tests\Feature\Controllers\WedgeMatrix;
 
 use App\Exceptions\CouldNotCreateWedgeMatrixException;
 use App\Exceptions\WedgeMatrixLimitReachedException;
