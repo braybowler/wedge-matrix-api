@@ -182,6 +182,6 @@ class RegisterControllerTest extends TestCase
 
         $response
             ->assertStatus(500)
-            ->assertJson(['message' => 'Unexpected error while registering user']);
+            ->assertJson(['message' => 'Internal server error']);
     }
 }

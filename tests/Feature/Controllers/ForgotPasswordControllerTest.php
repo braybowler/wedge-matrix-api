@@ -93,6 +93,6 @@ class ForgotPasswordControllerTest extends TestCase
         ]);
 
         $response->assertServerError();
-        $response->assertJsonPath('message', 'Unexpected error while sending password reset link');
+        $response->assertJsonPath('message', 'Internal server error');
     }
 }

@@ -68,6 +68,6 @@ class DestroyTest extends TestCase
         $response = $this->actingAs($user)->deleteJson(route('user.destroy'));
 
         $response->assertServerError();
-        $response->assertJsonPath('message', 'Unexpected server error while deleting user');
+        $response->assertJsonPath('message', 'Internal server error');
     }
 }

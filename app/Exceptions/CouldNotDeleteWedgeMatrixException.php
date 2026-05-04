@@ -2,9 +2,18 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Contracts\ApiException;
 use RuntimeException;
 
-class CouldNotDeleteWedgeMatrixException extends RuntimeException
+class CouldNotDeleteWedgeMatrixException extends RuntimeException implements ApiException
 {
-    //
+    public function getStatusCode(): int
+    {
+        return 400;
+    }
+
+    public function getUserMessage(): string
+    {
+        return 'Could not delete wedge matrix';
+    }
 }

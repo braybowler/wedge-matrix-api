@@ -159,6 +159,6 @@ class ResetPasswordControllerTest extends TestCase
         ]);
 
         $response->assertServerError();
-        $response->assertJsonPath('message', 'Unexpected error while resetting password');
+        $response->assertJsonPath('message', 'Internal server error');
     }
 }

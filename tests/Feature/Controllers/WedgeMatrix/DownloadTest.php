@@ -171,6 +171,6 @@ class DownloadTest extends TestCase
         );
 
         $response->assertServerError();
-        $response->assertJsonPath('message', 'Unexpected server error while downloading wedge matrix');
+        $response->assertJsonPath('message', 'Internal server error');
     }
 }
