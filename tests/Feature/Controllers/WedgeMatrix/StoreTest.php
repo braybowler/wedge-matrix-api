@@ -116,7 +116,7 @@ class StoreTest extends TestCase
         );
 
         $response->assertServerError();
-        $response->assertJsonPath('message', 'Unexpected server error while creating wedge matrix');
+        $response->assertJsonPath('message', 'Internal server error');
     }
 
     public function test_creates_wedge_matrix_with_clock_column_headers(): void

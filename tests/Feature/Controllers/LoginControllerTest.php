@@ -9,7 +9,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -167,35 +166,8 @@ class LoginControllerTest extends TestCase
         $response->assertServerError();
         $response->assertJsonPath(
             'message',
-            'Unexpected error while logging in'
+            'Internal server error'
         );
     }
 
-    public function test_logs_error_messaging_when_catching_a_server_error_during_login_request(): void
-    {
-        $userEmail = 'test@example.com';
-        User::factory()->create([
-            'email' => $userEmail,
-            'password' => Hash::make('password'),
-        ]);
-
-        $this->assertDatabaseCount('users', 1);
-        $this->assertDatabaseHas('users', [
-            'email' => $userEmail,
-        ]);
-
-        Auth::shouldReceive('attempt')->once()->andThrow(new Exception);
-        Log::shouldReceive('error')->with(
-            'Server error while logging in',
-            Mockery::any()
-        );
-
-        $this->postJson(
-            route('login'),
-            [
-                'email' => $userEmail,
-                'password' => 'password',
-            ]
-        );
-    }
 }

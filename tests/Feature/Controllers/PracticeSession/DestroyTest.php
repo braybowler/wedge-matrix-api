@@ -87,6 +87,6 @@ class DestroyTest extends TestCase
         );
 
         $response->assertServerError();
-        $response->assertJsonPath('message', 'Unexpected server error while deleting practice session');
+        $response->assertJsonPath('message', 'Internal server error');
     }
 }

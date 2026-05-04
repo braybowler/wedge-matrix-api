@@ -291,6 +291,6 @@ class UpdateTest extends TestCase
         );
 
         $response->assertServerError();
-        $response->assertJsonPath('message', 'Unexpected server error while updating wedge matrix');
+        $response->assertJsonPath('message', 'Internal server error');
     }
 }

@@ -175,6 +175,6 @@ class StoreTest extends TestCase
         );
 
         $response->assertServerError();
-        $response->assertJsonPath('message', 'Unexpected server error while creating practice session');
+        $response->assertJsonPath('message', 'Internal server error');
     }
 }

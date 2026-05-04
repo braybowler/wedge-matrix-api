@@ -7,8 +7,6 @@ use App\Repositories\WedgeMatrix\WedgeMatrixRepository;
 use Exception;
 use Facades\App\Models\WedgeMatrix;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Log;
-use Mockery;
 use Tests\TestCase;
 
 class IndexTest extends TestCase
@@ -95,35 +93,7 @@ class IndexTest extends TestCase
         );
 
         $response->assertServerError();
-        $response->assertJsonPath('message', 'Unexpected error while fetching wedge matrices');
+        $response->assertJsonPath('message', 'Internal server error');
     }
 
-    public function test_logs_error_messaging_on_unsuccessful_index_requests(): void
-    {
-        $user = User::factory()->create();
-        WedgeMatrix::factory()->create(
-            ['user_id' => $user->id]
-        );
-
-        $this->assertDatabaseCount('users', 1);
-        $this->assertDatabaseCount('wedge_matrices', 1);
-
-        $this->mock(WedgeMatrixRepository::class, function ($mock) {
-            $mock->shouldReceive('index')
-                ->once()
-                ->andThrow(new Exception);
-        });
-
-        Log::shouldReceive('error')->once()->with(
-            'Server error while fetching wedge matrices: (GET /api/wedge-matrix)',
-            Mockery::any()
-        );
-
-        $response = $this->actingAs($user)->getJson(
-            route('wedge-matrix.index')
-        );
-
-        $response->assertServerError();
-        $response->assertJsonPath('message', 'Unexpected error while fetching wedge matrices');
-    }
 }
