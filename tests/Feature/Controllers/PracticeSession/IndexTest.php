@@ -7,8 +7,6 @@ use App\Models\User;
 use App\Repositories\PracticeSession\PracticeSessionRepository;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Log;
-use Mockery;
 use Tests\TestCase;
 
 class IndexTest extends TestCase
@@ -101,28 +99,7 @@ class IndexTest extends TestCase
         );
 
         $response->assertServerError();
-        $response->assertJsonPath('message', 'Unexpected error while fetching practice sessions');
+        $response->assertJsonPath('message', 'Internal server error');
     }
 
-    public function test_logs_error_messaging_on_unsuccessful_index_requests(): void
-    {
-        $user = User::factory()->create();
-
-        $this->mock(PracticeSessionRepository::class, function ($mock) {
-            $mock->shouldReceive('index')
-                ->once()
-                ->andThrow(new Exception);
-        });
-
-        Log::shouldReceive('error')->once()->with(
-            'Server error while fetching practice sessions: (GET /api/practice-session)',
-            Mockery::any()
-        );
-
-        $response = $this->actingAs($user)->getJson(
-            route('practice-session.index')
-        );
-
-        $response->assertServerError();
-    }
 }

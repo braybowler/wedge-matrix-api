@@ -3,11 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ColumnHeaderType;
-use App\Exceptions\CannotDeleteLastWedgeMatrixException;
-use App\Exceptions\CouldNotCreateWedgeMatrixException;
-use App\Exceptions\CouldNotDeleteWedgeMatrixException;
-use App\Exceptions\CouldNotUpdateWedgeMatrixException;
-use App\Exceptions\WedgeMatrixLimitReachedException;
 use App\Http\Requests\WedgeMatrix\DeleteWedgeMatrixRequest;
 use App\Http\Requests\WedgeMatrix\StoreWedgeMatrixRequest;
 use App\Http\Requests\WedgeMatrix\UpdateWedgeMatrixRequest;
@@ -20,106 +15,40 @@ use App\Services\WedgeMatrix\WedgeMatrixUpdateService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
-use Throwable;
 
 class WedgeMatrixController extends Controller
 {
-    public function index(WedgeMatrixRepository $wedgeMatrixRepository): AnonymousResourceCollection|JsonResponse
+    public function index(WedgeMatrixRepository $wedgeMatrixRepository): AnonymousResourceCollection
     {
-        try {
-            return WedgeMatrixResource::collection(
-                $wedgeMatrixRepository->index()->get()
-            );
-        } catch (Throwable $e) {
-            Log::error(
-                'Server error while fetching wedge matrices: (GET /api/wedge-matrix)',
-                ['exception' => $e],
-            );
-
-            return response()->json([
-                'message' => 'Unexpected error while fetching wedge matrices',
-            ], 500);
-        }
+        return WedgeMatrixResource::collection(
+            $wedgeMatrixRepository->index()->get()
+        );
     }
 
     public function store(StoreWedgeMatrixRequest $request, WedgeMatrixCreationService $wedgeMatrixCreationService): JsonResponse
     {
-        try {
-            $wedgeMatrix = $wedgeMatrixCreationService->create(
-                $request->user(),
-                $request->input('label'),
-                ColumnHeaderType::tryFrom($request->input('column_header_type')),
-            );
+        $wedgeMatrix = $wedgeMatrixCreationService->create(
+            $request->user(),
+            $request->input('label'),
+            ColumnHeaderType::tryFrom($request->input('column_header_type')),
+        );
 
-            return (new WedgeMatrixResource($wedgeMatrix))
-                ->response()
-                ->setStatusCode(201);
-        } catch (WedgeMatrixLimitReachedException $e) {
-            return response()->json([
-                'message' => 'Wedge matrix limit reached',
-            ], 422);
-        } catch (CouldNotCreateWedgeMatrixException $e) {
-            return response()->json([
-                'message' => 'Could not create wedge matrix',
-            ], 400);
-        } catch (Throwable $e) {
-            Log::error(
-                'Server error while creating wedge matrix: (POST /api/wedge-matrix)',
-                ['exception' => $e],
-            );
-
-            return response()->json([
-                'message' => 'Unexpected server error while creating wedge matrix',
-            ], 500);
-        }
+        return (new WedgeMatrixResource($wedgeMatrix))
+            ->response()
+            ->setStatusCode(201);
     }
 
-    public function update(UpdateWedgeMatrixRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixUpdateService $wedgeMatrixUpdateService): Response|JsonResponse
+    public function update(UpdateWedgeMatrixRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixUpdateService $wedgeMatrixUpdateService): Response
     {
-        try {
-            $wedgeMatrixUpdateService->update($wedgeMatrix, $request->validated());
+        $wedgeMatrixUpdateService->update($wedgeMatrix, $request->validated());
 
-            return response()->noContent();
-        } catch (CouldNotUpdateWedgeMatrixException $e) {
-            return response()->json([
-                'message' => 'Could not update wedge matrix',
-            ], 400);
-        } catch (Throwable $e) {
-            Log::error(
-                'Server error while updating wedge matrix: (PUT /api/wedge-matrix/{id})',
-                ['exception' => $e],
-            );
-
-            return response()->json([
-                'message' => 'Unexpected server error while updating wedge matrix',
-            ], 500);
-        }
+        return response()->noContent();
     }
 
-    public function destroy(DeleteWedgeMatrixRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixDeletionService $wedgeMatrixDeletionService): Response|JsonResponse
+    public function destroy(DeleteWedgeMatrixRequest $request, WedgeMatrix $wedgeMatrix, WedgeMatrixDeletionService $wedgeMatrixDeletionService): Response
     {
-        try {
-            $wedgeMatrixDeletionService->delete($wedgeMatrix);
+        $wedgeMatrixDeletionService->delete($wedgeMatrix);
 
-            return response()->noContent();
-        } catch (CannotDeleteLastWedgeMatrixException $e) {
-            return response()->json([
-                'message' => 'Cannot delete the last wedge matrix',
-            ], 422);
-        } catch (CouldNotDeleteWedgeMatrixException $e) {
-            return response()->json([
-                'message' => 'Could not delete wedge matrix',
-            ], 400);
-        } catch (Throwable $e) {
-            Log::error(
-                'Server error while deleting wedge matrix: (DELETE /api/wedge-matrix/{id})',
-                ['exception' => $e],
-            );
-
-            return response()->json([
-                'message' => 'Unexpected server error while deleting wedge matrix',
-            ], 500);
-        }
+        return response()->noContent();
     }
 }

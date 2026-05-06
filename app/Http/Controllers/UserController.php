@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\CouldNotDeleteUserException;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Services\User\UserDeletionService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
-use Throwable;
 
 class UserController extends Controller
 {
@@ -26,25 +22,10 @@ class UserController extends Controller
         return new UserResource($request->user()->load('wedgeMatrices'));
     }
 
-    public function destroy(Request $request, UserDeletionService $userDeletionService): Response|JsonResponse
+    public function destroy(Request $request, UserDeletionService $userDeletionService): Response
     {
-        try {
-            $userDeletionService->delete($request->user());
+        $userDeletionService->delete($request->user());
 
-            return response()->noContent();
-        } catch (CouldNotDeleteUserException $e) {
-            return response()->json([
-                'message' => 'Could not delete user',
-            ], 400);
-        } catch (Throwable $e) {
-            Log::error(
-                'Server error while deleting user: (DELETE /api/user)',
-                ['exception' => $e],
-            );
-
-            return response()->json([
-                'message' => 'Unexpected server error while deleting user',
-            ], 500);
-        }
+        return response()->noContent();
     }
 }
